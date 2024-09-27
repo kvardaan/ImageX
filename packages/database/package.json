@@ -1,21 +1,21 @@
 {
-	"name": "@repo/database",
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"db:generate": "prisma generate",
-		"db:migrate:dev": "prisma migrate dev",
-		"db:push": "prisma db push",
-		"format": "prisma format",
-		"studio": "prisma studio"
-	},
-	"exports": {
-		".": "./src/index.ts"
-	},
-	"devDependencies": {
-		"prisma": "^5.19.1"
-	},
-	"dependencies": {
-		"@prisma/client": "^5.19.1"
-	}
+  "name": "@repo/database",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "format": "prisma format",
+    "studio": "prisma studio"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "prisma": "^5.19.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.19.1"
+  }
 }

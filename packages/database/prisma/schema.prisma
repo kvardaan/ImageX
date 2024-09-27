@@ -67,6 +67,13 @@ model VerificationToken {
   expires DateTime
 }
 
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String   @unique
+  token   String   @unique
+  expires DateTime
+}
+
 model Plan {
   id       Int    @id @default(autoincrement())
   planType String
