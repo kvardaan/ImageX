@@ -1,6 +1,8 @@
+import { Toaster } from "sonner";
 import type { Metadata } from "next";
 
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ThemeProvider>
+          {children}
+          <Toaster richColors closeButton duration={2000} />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
