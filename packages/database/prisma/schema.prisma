@@ -16,8 +16,8 @@ model User {
   profileUrl    String?
   accounts      Account[]
   images        Image[]
-  planId        Int
-  plan          Plan      @relation(fields: [planId], references: [id])
+  planId        Int?
+  plan          Plan?     @relation(fields: [planId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
