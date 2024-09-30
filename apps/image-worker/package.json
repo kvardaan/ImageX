@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@repo/database": "*",
-    "@repo/redis": "*",
     "@repo/typescript-config": "*",
+    "amqplib": "^0.10.4",
+    "dotenv": "^16.4.5",
     "esbuild": "^0.24.0",
     "esbuild-register": "^3.6.0"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.5",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2"
   }
