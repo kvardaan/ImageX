@@ -1,6 +1,6 @@
 import { createClient } from "redis";
 
-import { config } from "@/lib/config";
+import { config } from "@/lib/utils/config";
 
 // Redis client setup
 const client = createClient({
@@ -38,4 +38,24 @@ client.on("error", (err: string) => console.error(`Redis Client Error: ${err}`))
 
 connectWithRetry();
 
-export default client;
+/**
+ * Caches the data
+ */
+export const cacheData = async (key: string, data: string, ttl: number) => {
+  await client.set(key, JSON.stringify(data), { EX: ttl });
+};
+
+/**
+ * Gets the cached data
+ */
+export const getCachedData = async (key: string) => {
+  const data = await client.get(key);
+  return data ? JSON.parse(data) : null;
+};
+
+/**
+ * Deletes the cached data
+ */
+export const deleteCachedData = async (key: string) => {
+  await client.del(key);
+};

@@ -3,10 +3,10 @@ import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 
-import { config } from "@/lib/config";
+import { config } from "@/lib/utils/config";
 import { SignInSchema } from "@/schemas/auth";
-import { comparePassword } from "@/lib/utils";
 import { getUserByEmail } from "@/lib/data/user";
+import { comparePassword } from "@/lib/utils/auth";
 
 export default {
   providers: [

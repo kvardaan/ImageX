@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-import { config } from "@/lib/config";
+import { config } from "@/lib/utils/config";
 import { EmailVerification, PasswordReset } from "@/components/templates/mail";
 
 const resend = new Resend(config.resendApiKey);
