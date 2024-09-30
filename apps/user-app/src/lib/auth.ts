@@ -19,7 +19,7 @@ export const currentUser = async (): Promise<CustomUser | undefined> => {
 /**
  * Returns the password by hashing it
  */
-export const hashPassword = async (password: string): Promise<String> => {
+export const hashPassword = async (password: string): Promise<string> => {
   const hashedPassword = await hash(password, 12);
   return hashedPassword;
 };
