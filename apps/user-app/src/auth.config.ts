@@ -4,7 +4,7 @@ import GitHub from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 
 import { config } from "@/lib/utils/config";
-import { SignInSchema } from "@/schemas/auth";
+import { LoginSchema } from "@/schemas/auth";
 import { getUserByEmail } from "@/lib/data/user";
 import { comparePassword } from "@/lib/utils/auth";
 
@@ -25,7 +25,7 @@ export default {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        const validCredentials = SignInSchema.safeParse(credentials);
+        const validCredentials = LoginSchema.safeParse(credentials);
 
         if (!validCredentials.success) return null;
         const { email, password } = validCredentials.data;

@@ -34,11 +34,11 @@ export const newVerification = async (token: string) => {
         where: { id: existingToken.id },
       })
 
-      return { success: "Email verified!" }
     })
   }
   catch (error) {
     console.log(`Error verifying user: ${String(error)}`);
     return { error: "Something went wrong!" }
   }
+  return { success: "Email verified!" }
 }
