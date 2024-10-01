@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const SignInSchema = z.object({
+export const LoginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).min(1, "Email is required").email("Invalid email"),
   password: z
     .string({ required_error: "Password is required" })
@@ -24,9 +24,6 @@ export const NewPasswordSchema = z.object({
 export const SignUpSchema = z.object({
   name: z.string({ required_error: "Name is required" }).min(3, { message: "Name should be more than 3 characters" }),
   email: z.string({ required_error: "Email is required" }).min(1, "Email is required").email({ message: "Invalid email" }),
-  phoneNumber: z
-    .string({ required_error: "Phone Number is required" })
-    .refine((value) => /^\+91[- ]?[4-9]\d{9}$/.test(value), { message: "Invalid phone number" }),
   password: z
     .string({ required_error: "Password is required" })
     .min(1, "Password is required")
