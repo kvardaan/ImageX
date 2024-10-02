@@ -23,6 +23,7 @@ export const NewVerificationForm = () => {
       setError("Missing token");
       return;
     }
+
     try {
       const data = await newVerification(token);
 
@@ -35,7 +36,7 @@ export const NewVerificationForm = () => {
 
   useEffect(() => {
     onSubmit();
-  }, [onSubmit]);
+  }, []);
 
   return (
     <CardWrapper
@@ -45,8 +46,8 @@ export const NewVerificationForm = () => {
     >
       <div className="flex items-center w-full justify-center">
         {!success && !error && <BeatLoader color="#7f7f7f" />}
-        {!success && <FormError message={error} />}
         <FormSuccess message={success} />
+        {!success && <FormError message={error} />}
       </div>
     </CardWrapper>
   );

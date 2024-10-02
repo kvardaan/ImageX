@@ -2,6 +2,7 @@ const _config = {
   route: process.env.ROUTE,
   jwtSecret: process.env.JWT_SECRET,
   nodeEnv: process.env.NODE_ENV,
+  authSecret: process.env.AUTH_SECRET,
   redisHost: process.env.REDIS_SOCKET_HOST || "localhost",
   redisPort: process.env.REDIS_PORT || 6379,
   resendApiKey: process.env.RESEND_API_KEY,

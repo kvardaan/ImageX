@@ -40,5 +40,6 @@ export const newVerification = async (token: string) => {
     console.log(`Error verifying user: ${String(error)}`);
     return { error: "Something went wrong!" }
   }
+
   return { success: "Email verified!" }
 }
