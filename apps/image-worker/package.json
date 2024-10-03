@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
-    "start": "node ./dist/index.js",
-    "dev": "nodemon --exec \"node -r esbuild-register ./src/index.ts\" -e .ts",
+    "build": "npx esbuild ./src/processor.ts --bundle --platform=node --outfile=dist/processor.js",
+    "start": "node ./dist/processor.js",
+    "dev": "nodemon --exec \"node -r esbuild-register ./src/processor.ts\" -e .ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

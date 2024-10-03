@@ -74,6 +74,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if (session.user) {
         session.user.name = token.name;
+        session.user.profileUrl = token.profileUrl as string;
         session.user.isOAuth = token.isOAuth as boolean;
       }
 
@@ -90,6 +91,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
+      token.profileUrl = existingUser.profileUrl;
       return token;
     },
   },

@@ -36,7 +36,7 @@ export const NewVerificationForm = () => {
 
   useEffect(() => {
     onSubmit();
-  }, []);
+  });
 
   return (
     <CardWrapper

@@ -4,8 +4,8 @@ import * as z from "zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   Form,
@@ -29,6 +29,8 @@ export const LoginForm = () => {
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email already in use with different provider!"
       : "";
+
+  const router = useRouter();
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -55,6 +57,7 @@ export const LoginForm = () => {
         } else if (response?.success) {
           form.reset();
           setSuccess(response?.success);
+          router.push("/dashboard");
         }
       } catch (error) {
         setError("Something went wrong!");

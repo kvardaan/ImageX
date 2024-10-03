@@ -1,9 +1,9 @@
 import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { DEFAULT_LOGIN_REDIRECT, PUBLIC_ROUTES, AUTH_ROUTES, API_AUTH_PREFIX } from "@/lib/routes";
 
-export default async function middleware(req: any) {
+export default async function middleware(req: NextRequest) {
   const { nextUrl } = req
   const session = await getToken({ req, secret: process.env.AUTH_SECRET })
   const isLoggedIn = !!session?.email
