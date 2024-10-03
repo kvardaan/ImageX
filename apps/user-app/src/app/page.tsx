@@ -11,7 +11,7 @@ import { LoginButton } from "@/components/auth/loginButton";
 
 export default function Home() {
   const session = useSession();
-  if (session.data?.user) redirect("/dashboard");
+  if (session.data?.user) redirect("/overview");
 
   return (
     <main className="flex flex-col h-screen items-center justify-center">
@@ -19,13 +19,13 @@ export default function Home() {
         <ThemeToggle />
         <h1
           className={cn(
-            "text-6xl font-semibold text-white drop-shadow-md",
+            "text-6xl font-semibold drop-shadow-md",
             poppins.className
           )}
         >
           ImageX
         </h1>
-        <p className="text-white text-lg">A simple image processing service</p>
+        <p className="text-xl">A simple image processing service</p>
         <div>
           <LoginButton>
             <Button variant="secondary" size="lg">

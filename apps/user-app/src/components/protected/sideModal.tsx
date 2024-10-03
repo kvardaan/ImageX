@@ -1,11 +1,4 @@
-import {
-  Menu,
-  Home,
-  Handshake,
-  PlusCircle,
-  ArrowLeftRight,
-  User,
-} from "lucide-react";
+import { Menu, Home, User } from "lucide-react";
 
 import {
   Sheet,
@@ -17,7 +10,7 @@ import {
 import { auth } from "@/auth";
 import { SideBarItem } from "@/components/sideBarItem";
 import { LogoutButton } from "@/components/auth/logoutButton";
-import { UserProfile } from "@/components/protected/userProfile";
+import { ProfileButton } from "@/components/protected/profileButton";
 
 export const SideModal = async () => {
   const session = await auth();
@@ -32,32 +25,17 @@ export const SideModal = async () => {
           <section className="w-full flex flex-col items-center gap-4">
             <SheetHeader className="flex flex-col items-center gap-2 pt-4">
               <SheetTitle className="dark:text-white/75">ImageX</SheetTitle>
-              <UserProfile />
+              <ProfileButton />
             </SheetHeader>
             {session && (
-              <div className="w-full sm:w-2/3 flex flex-col justify-center items-center gap-x-2 gap-y-3">
+              <div className="w-full flex flex-col justify-center items-center gap-x-2 gap-y-3">
                 <SideBarItem
                   href="/"
                   title="Overview"
                   icon={<Home className="w-4 h-4" />}
                 />
                 <SideBarItem
-                  href="/"
-                  title="Add Money"
-                  icon={<PlusCircle className="w-4 h-4" />}
-                />
-                <SideBarItem
-                  href="/"
-                  title="Transactions"
-                  icon={<ArrowLeftRight className="w-4 h-4" />}
-                />
-                <SideBarItem
-                  href="/"
-                  title="Transfer"
-                  icon={<Handshake className="w-4 h-4" />}
-                />
-                <SideBarItem
-                  href="/user-profile"
+                  href="/profile"
                   title="Profile"
                   icon={<User className="w-4 h-4" />}
                 />

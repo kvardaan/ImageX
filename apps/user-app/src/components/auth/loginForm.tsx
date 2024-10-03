@@ -57,7 +57,7 @@ export const LoginForm = () => {
         } else if (response?.success) {
           form.reset();
           setSuccess(response?.success);
-          router.push("/dashboard");
+          router.push("/overview");
         }
       } catch (error) {
         setError("Something went wrong!");

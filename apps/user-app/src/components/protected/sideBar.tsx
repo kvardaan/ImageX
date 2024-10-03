@@ -1,10 +1,4 @@
-import {
-  Home,
-  Handshake,
-  PlusCircle,
-  ArrowLeftRight,
-  User,
-} from "lucide-react";
+import { Home, User } from "lucide-react";
 
 import { SideBarItem } from "@/components/sideBarItem";
 import { LogoutButton } from "@/components/auth/logoutButton";
@@ -22,22 +16,7 @@ export const SideBar = () => {
           icon={<Home className="w-4 h-4" />}
         />
         <SideBarItem
-          href="/"
-          title="Add Money"
-          icon={<PlusCircle className="w-4 h-4" />}
-        />
-        <SideBarItem
-          href="/"
-          title="Transactions"
-          icon={<ArrowLeftRight className="w-4 h-4" />}
-        />
-        <SideBarItem
-          href="/"
-          title="Transfer"
-          icon={<Handshake className="w-4 h-4" />}
-        />
-        <SideBarItem
-          href="/user-profile"
+          href="/profile"
           title="Profile"
           icon={<User className="w-4 h-4" />}
         />

@@ -3,7 +3,7 @@ import { Camera } from "lucide-react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SideModal } from "@/components/protected/sideModal";
-import { UserProfile } from "@/components/protected/userProfile";
+import { ProfileButton } from "@/components/protected/profileButton";
 
 export const AppBar = () => {
   return (
@@ -19,7 +19,7 @@ export const AppBar = () => {
             <ThemeToggle />
             <SideModal />
             <div className="hidden lg:flex items-center gap-x-3">
-              <UserProfile />
+              <ProfileButton />
             </div>
           </div>
         </div>
