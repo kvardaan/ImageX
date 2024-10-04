@@ -11,6 +11,9 @@ const _config = {
   googleSecretKey: process.env.GOOGLE_SECRET_KEY,
   githubClientId: process.env.GITHUB_CLIENT_ID,
   githubSecretKey: process.env.GITHUB_SECRET_KEY,
+  awsS3ProcessingBucketName: process.env.PROCESSING_BUCKET_NAME,
+  awsS3TrialUserBucketName: process.env.TRIAL_USER_BUCKET_NAME,
+  awsS3PremiumUserBucketName: process.env.PREMIUM_USER_BUCKET_NAME,
 };
 
 export const config = Object.freeze(_config);
