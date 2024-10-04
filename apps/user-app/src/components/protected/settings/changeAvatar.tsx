@@ -16,7 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export const ChangeAvatar = () => {
+interface ChangeAvatarProps {
+  children: React.ReactNode;
+}
+
+export const ChangeAvatar = ({ children }: ChangeAvatarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -58,16 +62,7 @@ export const ChangeAvatar = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          size="icon"
-          variant="outline"
-          className="rounded-full relative bottom-2 left-10 bg-background"
-        >
-          <PlusIcon className="h-4 w-4" />
-          <span className="sr-only">Change avatar</span>
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-[90%] rounded-lg">
         <DialogHeader>
           <DialogTitle>Edit Avatar</DialogTitle>

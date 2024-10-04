@@ -2,9 +2,9 @@ import { Metadata } from "next";
 
 import { auth } from "@/auth";
 import { Heading } from "@/components/heading";
-import { UserProfile } from "@/components/protected/profile/userProfile";
+import { SettingsContent } from "@/components/protected/settings/settingsContent";
 
-export const metadata: Metadata = { title: "Profile" };
+export const metadata: Metadata = { title: "Settings" };
 
 export interface UserType {
   user: {
@@ -22,9 +22,9 @@ export default async function Page() {
 
   return (
     <div className="rounded-md p-2 text-clip w-full overflow-y-auto bg-gray-50 dark:bg-white/10">
-      <Heading title="Profile" />
-      <div className="w-full gap-2 mt-2">
-        <UserProfile user={user} />
+      <Heading title="Settings" />
+      <div className="w-full gap-2 my-2">
+        <SettingsContent user={user} />
       </div>
     </div>
   );

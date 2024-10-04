@@ -1,4 +1,4 @@
-import { Home, User } from "lucide-react";
+import { Home, Settings } from "lucide-react";
 
 import { SideBarItem } from "@/components/sideBarItem";
 import { LogoutButton } from "@/components/auth/logoutButton";
@@ -16,9 +16,9 @@ export const SideBar = () => {
           icon={<Home className="w-4 h-4" />}
         />
         <SideBarItem
-          href="/profile"
-          title="Profile"
-          icon={<User className="w-4 h-4" />}
+          href="/settings"
+          title="Settings"
+          icon={<Settings className="w-4 h-4" />}
         />
       </div>
       <LogoutButton />

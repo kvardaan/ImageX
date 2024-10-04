@@ -1,4 +1,4 @@
-import { Menu, Home, User } from "lucide-react";
+import { Menu, Home, Settings } from "lucide-react";
 
 import {
   Sheet,
@@ -35,9 +35,9 @@ export const SideModal = async () => {
                   icon={<Home className="w-4 h-4" />}
                 />
                 <SideBarItem
-                  href="/profile"
-                  title="Profile"
-                  icon={<User className="w-4 h-4" />}
+                  href="/settings"
+                  title="Settings"
+                  icon={<Settings className="w-4 h-4" />}
                 />
               </div>
             )}
