@@ -1,24 +1,21 @@
 import { Metadata } from "next";
 
-import { auth } from "@/auth";
 import { Heading } from "@/components/heading";
+import { currentUser } from "@/lib/utils/auth";
 import { SettingsContent } from "@/components/protected/settings/settingsContent";
 
 export const metadata: Metadata = { title: "Settings" };
 
-export interface UserType {
-  user: {
-    id?: string;
-    name: string;
-    email: string;
-    isOAuth: boolean;
-    profileUrl: string;
-  };
-}
+// export interface UserType {
+//   id?: string;
+//   name: string;
+//   email: string;
+//   isOAuth: boolean;
+//   profileUrl: string;
+// }
 
 export default async function Page() {
-  const session = await auth();
-  const user: UserType | any = session?.user;
+  const user = await currentUser();
 
   return (
     <div className="rounded-md p-2 text-clip w-full overflow-y-auto bg-gray-50 dark:bg-white/10">

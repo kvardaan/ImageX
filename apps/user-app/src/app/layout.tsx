@@ -26,7 +26,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="antialiased text-black dark:text-white">
+      <body
+        className={`${poppins.className} antialiased text-black dark:text-white`}
+      >
         <ThemeProvider>
           <SessionProvider session={session}>
             {children}

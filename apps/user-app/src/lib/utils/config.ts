@@ -12,8 +12,8 @@ const _config = {
   githubClientId: process.env.GITHUB_CLIENT_ID,
   githubSecretKey: process.env.GITHUB_SECRET_KEY,
   awsS3ProcessingBucketName: process.env.PROCESSING_BUCKET_NAME,
-  awsS3TrialUserBucketName: process.env.TRIAL_USER_BUCKET_NAME,
-  awsS3PremiumUserBucketName: process.env.PREMIUM_USER_BUCKET_NAME,
+  awsS3UserBucketName: process.env.USER_BUCKET_NAME,
+  awsS3Region: process.env.AWS_S3_REGION
 };
 
 export const config = Object.freeze(_config);

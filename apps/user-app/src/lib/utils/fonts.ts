@@ -3,7 +3,7 @@ import { NextFont } from "next/dist/compiled/@next/font";
 
 export const poppins: NextFont = Poppins({
   subsets: ["latin"],
-  weight: ["600"],
+  weight: ["400"],
 });
 
 export const lusitana: NextFont = Lusitana({

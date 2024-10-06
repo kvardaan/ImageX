@@ -1,6 +1,16 @@
 import { prisma } from "@repo/database";
 
 import { User } from "@/lib/types/user"
+import { currentUser } from "@/lib/utils/auth";
+
+/**
+ * Returns the ID of the logged in user
+ */
+export const getUserID = async (): Promise<string | undefined> => {
+  const user = await currentUser()
+
+  return user?.id
+}
 
 /**
  * Finds the user from the DB using Id

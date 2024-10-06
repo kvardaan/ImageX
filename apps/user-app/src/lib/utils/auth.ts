@@ -10,10 +10,12 @@ interface CustomUser extends User {
 /**
  * Finds the user from the session
  */
-export const currentUser = async (): Promise<CustomUser | undefined> => {
+export const currentUser = async () => {
   const session = await auth();
 
-  return session?.user;
+  return {
+    ...session?.user
+  };
 };
 
 /**

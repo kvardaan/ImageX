@@ -1,8 +1,11 @@
 "use client";
 
+import axios from "axios";
 import Image from "next/image";
-import { PlusIcon, Upload } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { toast } from "sonner";
+import { Upload } from "lucide-react";
+import { StatusCodes } from "http-status-codes";
+import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 
 import {
   Dialog,
@@ -15,12 +18,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { getPublicUrl } from "@/lib/utils/aws.s3";
 
 interface ChangeAvatarProps {
   children: React.ReactNode;
+  userId: string | undefined;
+  setUserProfileUrl: Dispatch<SetStateAction<String>>;
 }
 
-export const ChangeAvatar = ({ children }: ChangeAvatarProps) => {
+export const ChangeAvatar = ({
+  children,
+  userId,
+  setUserProfileUrl,
+}: ChangeAvatarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -46,10 +56,38 @@ export const ChangeAvatar = ({ children }: ChangeAvatarProps) => {
     }
   };
 
-  const handleSaveAvatar = () => {
-    // TODO: Upload the avatar to S3
-    console.log("Saving avatar:", selectedFile);
-    // TODO: After successful upload, close the dialog and update the state
+  const handleSaveAvatar = async () => {
+    if (!selectedFile || !userId) {
+      toast.error("Please select an image to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("fileName", userId);
+    formData.append("contentType", selectedFile.type);
+    formData.append("file", selectedFile);
+
+    try {
+      const response: any = await axios({
+        method: "post",
+        url: "api/users/avatar",
+        data: formData,
+      });
+
+      if (response.status === 201) {
+        setUserProfileUrl(getPublicUrl(userId));
+        toast.success("Avatar changed successfully!");
+      } else {
+        console.error("Failed to upload avatar!");
+      }
+    } catch (error: any) {
+      console.error(`Error changing avatar:${JSON.stringify(error)}`);
+      if (error?.status === StatusCodes.BAD_REQUEST)
+        toast.error(error.response?.data?.error);
+      else if (error.response.status === StatusCodes.INTERNAL_SERVER_ERROR)
+        toast.error(error.response?.error);
+    }
   };
 
   useEffect(() => {

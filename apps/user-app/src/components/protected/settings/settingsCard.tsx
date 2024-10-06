@@ -36,7 +36,7 @@ export const SettingsCard = ({
         <CardContent>{content}</CardContent>
       </div>
       {footer && (
-        <CardFooter className="flex flex-row items-center justify-center sm:justify-normal py-4 px-6 border-t bg-neutral-100 dark:bg-neutral-800/50 dark:border-white/10 text-black/50 dark:text-white/50">
+        <CardFooter className="flex flex-row items-center justify-center sm:justify-normal py-4 px-6 border-t bg-neutral-100 dark:bg-neutral-800/50 dark:border-white/10 text-black/50 dark:text-white/50 text-sm">
           {footer}
         </CardFooter>
       )}
