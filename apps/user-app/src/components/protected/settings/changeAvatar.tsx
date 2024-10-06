@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getPublicUrl } from "@/lib/utils/aws.s3";
+import Error from "next/error";
 
 interface ChangeAvatarProps {
   children: React.ReactNode;
@@ -81,7 +82,7 @@ export const ChangeAvatar = ({
       } else {
         console.error("Failed to upload avatar!");
       }
-    } catch (error: any) {
+    } catch (error: Error | any) {
       console.error(`Error changing avatar:${JSON.stringify(error)}`);
       if (error?.status === StatusCodes.BAD_REQUEST)
         toast.error(error.response?.data?.error);
@@ -119,12 +120,12 @@ export const ChangeAvatar = ({
             onClick={() => fileInputRef.current?.click()}
           >
             {preview ? (
-              <Image
+              <img
                 src={preview}
                 alt="Avatar preview"
-                quality={100}
                 width={128}
                 height={128}
+                loading="lazy"
                 className="mx-auto h-40 w-40 object-cover border rounded-md"
               />
             ) : (

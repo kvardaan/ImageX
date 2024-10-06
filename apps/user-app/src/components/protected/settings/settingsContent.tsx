@@ -56,12 +56,12 @@ export const SettingsContent = ({ user }: any) => {
                 setUserProfileUrl={setUserProfileUrl}
               >
                 {userProfileUrl ? (
-                  <Image
+                  <img
                     src={user.profileUrl}
                     alt={`${user.name}'s Image`}
                     width={128}
                     height={128}
-                    quality={100}
+                    loading="lazy"
                     className="object-cover rounded-full"
                   />
                 ) : (

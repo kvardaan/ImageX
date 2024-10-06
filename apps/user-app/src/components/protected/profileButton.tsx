@@ -11,12 +11,13 @@ export const ProfileButton = async () => {
       <p className="font-semibold">{user?.name}</p>
       <div className="w-10 h-10 rounded-lg border flex items-center justify-center bg-gray-200">
         {user?.profileUrl ? (
-          <Image
+          <img
             src={user?.profileUrl}
             alt={`${String(user?.name)}'s Profile`}
             width={50}
             height={50}
-            className="hidden md:flex"
+            loading="lazy"
+            className="hidden md:flex overflow-hidden rounded-lg"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
