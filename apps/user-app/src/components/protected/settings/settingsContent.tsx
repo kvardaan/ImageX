@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import Image from "next/image";
 import { toast } from "sonner";
 import { useState } from "react";
 import { User } from "lucide-react";
@@ -62,7 +61,7 @@ export const SettingsContent = ({ user }: any) => {
                     width={128}
                     height={128}
                     loading="lazy"
-                    className="object-cover rounded-full"
+                    className="w-full h-full object-cover rounded-full"
                   />
                 ) : (
                   <User className="w-10 h-10 sm:w-16 sm:h-16 text-gray-400" />

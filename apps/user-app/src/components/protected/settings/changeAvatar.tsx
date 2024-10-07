@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import Image from "next/image";
+import Error from "next/error";
 import { toast } from "sonner";
 import { Upload } from "lucide-react";
 import { StatusCodes } from "http-status-codes";
@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getPublicUrl } from "@/lib/utils/aws.s3";
-import Error from "next/error";
+import { revalidatePath } from "next/cache";
 
 interface ChangeAvatarProps {
   children: React.ReactNode;
@@ -71,7 +71,7 @@ export const ChangeAvatar = ({
 
     try {
       const response: any = await axios({
-        method: "post",
+        method: "patch",
         url: "api/users/avatar",
         data: formData,
       });
@@ -80,14 +80,12 @@ export const ChangeAvatar = ({
         setUserProfileUrl(getPublicUrl(userId));
         toast.success("Avatar changed successfully!");
       } else {
-        console.error("Failed to upload avatar!");
+        toast.error("Failed to upload avatar!");
       }
     } catch (error: Error | any) {
-      console.error(`Error changing avatar:${JSON.stringify(error)}`);
       if (error?.status === StatusCodes.BAD_REQUEST)
         toast.error(error.response?.data?.error);
-      else if (error.response.status === StatusCodes.INTERNAL_SERVER_ERROR)
-        toast.error(error.response?.error);
+      else toast.error(error.response?.error);
     }
   };
 

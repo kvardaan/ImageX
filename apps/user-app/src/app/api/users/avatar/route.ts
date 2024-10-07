@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@repo/database";
 import { config } from "@/lib/utils/config";
-import { createPresignedGetURL, createPresignedPutURL } from "@repo/aws_s3"
 import { getPublicUrl } from "@/lib/utils/aws.s3";
+import { createPresignedGetURL, createPresignedPutURL } from "@repo/aws_s3"
 
-export async function POST(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   const formData = await request.formData();
   const userId = formData.get("userId");
   const fileName = formData.get("fileName");
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!response) {
-      return new NextResponse(JSON.stringify({ message: "Internal Server Error" }), { status: StatusCodes.INTERNAL_SERVER_ERROR })
+      return new NextResponse(JSON.stringify({ message: "Error uploading image!" }), { status: StatusCodes.FAILED_DEPENDENCY })
     }
 
     const avatarPublicUrl = getPublicUrl(String(userId))
@@ -42,8 +42,6 @@ export async function POST(request: NextRequest) {
 
     return new NextResponse(JSON.stringify({ avatarPublicUrl }), { status: StatusCodes.CREATED });
   } catch (error) {
-    console.log({ error });
-
     console.error(`Error adding image: ${JSON.stringify(error)}`)
     return new NextResponse(JSON.stringify({ message: "Internal Server Error" }), { status: StatusCodes.INTERNAL_SERVER_ERROR })
   }

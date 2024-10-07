@@ -17,7 +17,7 @@ export const ProfileButton = async () => {
             width={50}
             height={50}
             loading="lazy"
-            className="hidden md:flex overflow-hidden rounded-lg"
+            className="hidden md:flex rounded-lg w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

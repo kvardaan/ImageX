@@ -1,14 +1,12 @@
+import z from "zod"
 import { StatusCodes } from "http-status-codes";
 import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@repo/database";
 
-import z from "zod"
-
 const UserUpdateSchema = z.object({
   id: z.string(),
-  name: z.string().min(1, { message: "Name is required" }).max(32, { message: "Name should be less than 32 characters" }).optional(),
-  profileUrl: z.string().url({ message: "Profile URL is required" }).optional(),
+  name: z.string().min(1, { message: "Name is required" }).max(32, { message: "Name should be less than 32 characters" }),
 })
 
 export async function PATCH(request: NextRequest) {
@@ -23,7 +21,6 @@ export async function PATCH(request: NextRequest) {
       where: { id: userData.id },
       data: {
         name: userData.name,
-        profileUrl: userData.profileUrl,
       }
     });
 
