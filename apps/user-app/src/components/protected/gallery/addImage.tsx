@@ -19,19 +19,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getPublicUrl } from "@/lib/utils/aws.s3";
-import { revalidatePath } from "next/cache";
 
-interface ChangeAvatarProps {
+interface AddImageProps {
   children: React.ReactNode;
   userId: string | undefined;
   setUserProfileUrl: Dispatch<SetStateAction<String>>;
 }
 
-export const ChangeAvatar = ({
+export const AddImage = ({
   children,
   userId,
   setUserProfileUrl,
-}: ChangeAvatarProps) => {
+}: AddImageProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +56,7 @@ export const ChangeAvatar = ({
     }
   };
 
-  const handleSaveAvatar = async () => {
+  const handleSaveImage = async () => {
     if (!selectedFile || !userId) {
       toast.error("Please select an image to upload.");
       return;
@@ -71,16 +70,16 @@ export const ChangeAvatar = ({
 
     try {
       const response: any = await axios({
-        method: "patch",
-        url: "api/users/avatar",
+        method: "post",
+        url: "api/users/images",
         data: formData,
       });
 
       if (response.status === 201) {
         setUserProfileUrl(getPublicUrl(userId));
-        toast.success("Avatar changed successfully!");
+        toast.success("Image changed successfully!");
       } else {
-        toast.error("Failed to upload avatar!");
+        toast.error("Failed to upload image!");
       }
     } catch (error: Error | any) {
       if (error?.status === StatusCodes.BAD_REQUEST)
@@ -102,10 +101,9 @@ export const ChangeAvatar = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-[90%] rounded-lg">
         <DialogHeader>
-          <DialogTitle>Edit Avatar</DialogTitle>
+          <DialogTitle>Add Image</DialogTitle>
           <DialogDescription>
-            Upload a new avatar by dragging and dropping an image or selecting a
-            file.
+            Upload a new image by dragging and dropping or selecting a file.
           </DialogDescription>
         </DialogHeader>
         <div
@@ -120,7 +118,7 @@ export const ChangeAvatar = ({
             {preview ? (
               <img
                 src={preview}
-                alt="Avatar preview"
+                alt="Image preview"
                 width={128}
                 height={128}
                 loading="lazy"
@@ -130,7 +128,7 @@ export const ChangeAvatar = ({
               <div className="flex flex-col items-center justify-center h-32">
                 <Upload className="h-8 w-8 text-muted-foreground mb-2" />
                 <p className="text-sm text-muted-foreground">
-                  Drag and drop the avatar image here, or click to select a file
+                  Drag and drop the image here, or click to select a file
                 </p>
               </div>
             )}
@@ -144,13 +142,13 @@ export const ChangeAvatar = ({
           </div>
           {selectedFile && (
             <p className="text-sm text-muted-foreground text-center">
-              Selected Avatar: {selectedFile.name}
+              Selected Image: {selectedFile.name}
             </p>
           )}
         </div>
         <DialogFooter className="mx-auto">
-          <Button onClick={handleSaveAvatar} disabled={!selectedFile}>
-            Save Avatar
+          <Button onClick={handleSaveImage} disabled={!selectedFile}>
+            Add Image
           </Button>
         </DialogFooter>
       </DialogContent>

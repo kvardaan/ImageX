@@ -2,7 +2,7 @@ import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 
-import "./globals.css";
+import "@/app/globals.css";
 import { auth } from "@/auth";
 import { poppins } from "@/lib/utils/fonts";
 import { ThemeProvider } from "@/components/theme-provider";

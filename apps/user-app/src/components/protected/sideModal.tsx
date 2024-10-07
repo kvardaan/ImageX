@@ -1,4 +1,4 @@
-import { Menu, Home, Settings } from "lucide-react";
+import { Menu, Home, Settings, Images } from "lucide-react";
 
 import {
   Sheet,
@@ -34,6 +34,12 @@ export const SideModal = async () => {
                   title="Overview"
                   icon={<Home className="w-4 h-4" />}
                 />
+                <SideBarItem
+                  href="/gallery"
+                  title="Gallery"
+                  icon={<Images className="w-4 h-4" />}
+                />
+
                 <SideBarItem
                   href="/settings"
                   title="Settings"

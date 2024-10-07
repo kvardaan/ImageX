@@ -80,7 +80,7 @@ export const SettingsContent = ({ user }: any) => {
         content={
           <>
             <Input
-              className="w-1/2"
+              className="w-fit sm:w-1/2"
               name="name"
               id="name"
               placeholder="Enter name"
@@ -110,6 +110,9 @@ export const SettingsContent = ({ user }: any) => {
           </span>
         }
       />
+
+      {/* Plan */}
+      {/* TODO: Add a plan upgrade component */}
     </div>
   );
 };

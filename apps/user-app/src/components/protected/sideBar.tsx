@@ -1,4 +1,4 @@
-import { Home, Settings } from "lucide-react";
+import { Home, Images, Settings } from "lucide-react";
 
 import { SideBarItem } from "@/components/sideBarItem";
 import { LogoutButton } from "@/components/auth/logoutButton";
@@ -14,6 +14,11 @@ export const SideBar = () => {
           href="/"
           title="Overview"
           icon={<Home className="w-4 h-4" />}
+        />
+        <SideBarItem
+          href="/gallery"
+          title="Gallery"
+          icon={<Images className="w-4 h-4" />}
         />
         <SideBarItem
           href="/settings"
