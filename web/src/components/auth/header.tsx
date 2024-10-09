@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
-import { poppins } from "@/lib/utils/fonts";
+import { cn } from "@/lib/utils"
+import { poppins } from "@/lib/utils/fonts"
 
 interface HeaderProps {
-  label: string;
+  label: string
 }
 
 export const Header = ({ label }: HeaderProps) => {
@@ -13,5 +13,5 @@ export const Header = ({ label }: HeaderProps) => {
       </h1>
       <p className="text-sm text-muted-foreground">{label}</p>
     </div>
-  );
-};
+  )
+}

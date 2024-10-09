@@ -1,42 +1,42 @@
-"use client";
+"use client"
 
-import { BeatLoader } from "react-spinners";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { BeatLoader } from "react-spinners"
+import { useSearchParams } from "next/navigation"
+import { useCallback, useEffect, useState } from "react"
 
-import { FormError } from "@/components/formError";
-import { FormSuccess } from "@/components/formSuccess";
-import { CardWrapper } from "@/components/auth/cardWrapper";
-import { newVerification } from "@/actions/new-verification";
+import { FormError } from "@/components/formError"
+import { FormSuccess } from "@/components/formSuccess"
+import { CardWrapper } from "@/components/auth/cardWrapper"
+import { newVerification } from "@/actions/new-verification"
 
 export const NewVerificationForm = () => {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const searchParams = useSearchParams()
+  const token = searchParams.get("token")
 
-  const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>()
+  const [success, setSuccess] = useState<string | undefined>()
 
   const onSubmit = useCallback(async () => {
-    if (success || error) return;
+    if (success || error) return
 
     if (!token) {
-      setError("Missing token");
-      return;
+      setError("Missing token")
+      return
     }
 
     try {
-      const data = await newVerification(token);
+      const data = await newVerification(token)
 
-      setSuccess(data.success);
-      setError(data.error);
+      setSuccess(data.success)
+      setError(data.error)
     } catch {
-      setError("Something went wrong!");
+      setError("Something went wrong!")
     }
-  }, [token, success, error]);
+  }, [token, success, error])
 
   useEffect(() => {
-    onSubmit();
-  });
+    onSubmit()
+  })
 
   return (
     <CardWrapper
@@ -50,5 +50,5 @@ export const NewVerificationForm = () => {
         {!success && <FormError message={error} />}
       </div>
     </CardWrapper>
-  );
-};
+  )
+}

@@ -11,8 +11,7 @@ import { generateVerificationToken } from "@/lib/utils/tokens"
 export const register = async (values: z.infer<typeof SignUpSchema>) => {
   const validatedFields = SignUpSchema.safeParse(values)
 
-  if (!validatedFields.success)
-    return { error: "Invalid fields!" }
+  if (!validatedFields.success) return { error: "Invalid fields!" }
 
   const { email, password } = validatedFields.data
   const hashedPassword = await hashPassword(password)

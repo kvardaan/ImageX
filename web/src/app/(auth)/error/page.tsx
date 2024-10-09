@@ -1,11 +1,11 @@
-import { Metadata } from "next";
+import { Metadata } from "next"
 
-import { ErrorCard } from "@/components/auth/errorCard";
+import { ErrorCard } from "@/components/auth/errorCard"
 
-export const metadata: Metadata = { title: "Error" };
+export const metadata: Metadata = { title: "Error" }
 
 const Page = () => {
-  return <ErrorCard />;
-};
+  return <ErrorCard />
+}
 
-export default Page;
+export default Page

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   Card,
@@ -7,14 +7,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
 interface SettingsCardProps {
-  header: string;
-  description: string | JSX.Element;
-  content: string | JSX.Element;
-  footer?: string | JSX.Element;
-  flexDirection?: string;
+  header: string
+  description: string | JSX.Element
+  content: string | JSX.Element
+  footer?: string | JSX.Element
+  flexDirection?: string
 }
 
 export const SettingsCard = ({
@@ -41,5 +41,5 @@ export const SettingsCard = ({
         </CardFooter>
       )}
     </Card>
-  );
-};
+  )
+}

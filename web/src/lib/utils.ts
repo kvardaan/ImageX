@@ -1,14 +1,14 @@
 import { twMerge } from "tailwind-merge"
 import { clsx, type ClassValue } from "clsx"
 
-import { config } from "@/lib/utils/config";
+import { config } from "@/lib/utils/config"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export const getPublicUrl = (key: string) => {
-  return `https://s3.${config.awsS3Region}.amazonaws.com/${config.awsS3UserBucketName}/${key}`;
+  return `https://s3.${config.awsS3Region}.amazonaws.com/${config.awsS3UserBucketName}/${key}`
 }
 
 export const computeSHA256 = async (file: File) => {

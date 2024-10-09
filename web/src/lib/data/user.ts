@@ -18,13 +18,13 @@ export const getUserById = async (id: string): Promise<User | null> => {
   try {
     const user = await prisma.user.findUnique({
       where: { id },
-    });
+    })
 
-    return user;
+    return user
   } catch {
-    return null;
+    return null
   }
-};
+}
 
 /**
  * Finds the user from the DB using Email
@@ -33,18 +33,18 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
-    });
+    })
 
-    return user;
+    return user
   } catch {
-    return null;
+    return null
   }
-};
+}
 
 interface UserType {
-  name: string;
-  email: string;
-  password: string;
+  name: string
+  email: string
+  password: string
 }
 
 /**
@@ -62,5 +62,5 @@ export const createUser = async ({
       email,
       password,
     },
-  });
-};
+  })
+}

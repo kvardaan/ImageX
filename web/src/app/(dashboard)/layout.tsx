@@ -1,9 +1,9 @@
-import { AppBar } from "@/components/protected/appBar";
-import { Footer } from "@/components/protected/footer";
-import { SideBar } from "@/components/protected/sideBar";
+import { AppBar } from "@/components/protected/appBar"
+import { Footer } from "@/components/protected/footer"
+import { SideBar } from "@/components/protected/sideBar"
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export default function Layout({ children }: LayoutProps) {
@@ -16,5 +16,5 @@ export default function Layout({ children }: LayoutProps) {
       </main>
       <Footer />
     </div>
-  );
+  )
 }

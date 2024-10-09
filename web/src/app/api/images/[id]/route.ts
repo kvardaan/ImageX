@@ -1,7 +1,7 @@
+import { NextResponse } from "next/server"
 import { StatusCodes } from "http-status-codes"
-import { NextResponse } from "next/server";
 
-import prisma from "@/lib/clients/prisma";
+import prisma from "@/lib/clients/prisma"
 
 /**
  * @description
@@ -21,11 +21,14 @@ export async function GET({ params }: { params: { id: number } }) {
 
   try {
     const image = await prisma.image.findUnique({
-      where: { id }
-    });
+      where: { id },
+    })
 
-    return new NextResponse(JSON.stringify(image), { status: StatusCodes.OK });
+    return new NextResponse(JSON.stringify(image), { status: StatusCodes.OK })
   } catch {
-    return new NextResponse(JSON.stringify({ message: "Internal Server Error" }), { status: StatusCodes.INTERNAL_SERVER_ERROR })
+    return new NextResponse(
+      JSON.stringify({ message: "Internal Server Error" }),
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
+    )
   }
 }

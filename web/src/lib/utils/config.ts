@@ -15,6 +15,6 @@ const _config = {
   redisHost: process.env.REDIS_SOCKET_HOST || "localhost",
   redisPort: process.env.REDIS_PORT || 6379,
   redisPassword: process.env.REDIS_PASSWORD,
-};
+}
 
-export const config = Object.freeze(_config);
+export const config = Object.freeze(_config)

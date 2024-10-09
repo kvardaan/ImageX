@@ -1,17 +1,10 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { useState, useTransition } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod"
+import { useForm } from "react-hook-form"
+import { useState, useTransition } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
 
-import { reset } from "@/actions/reset";
-import { ResetSchema } from "@/schemas/auth";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/formError";
-import { FormSuccess } from "@/components/formSuccess";
-import { CardWrapper } from "@/components/auth/cardWrapper";
 import {
   Form,
   FormControl,
@@ -19,30 +12,37 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
+import { reset } from "@/actions/reset"
+import { ResetSchema } from "@/schemas/auth"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { FormError } from "@/components/formError"
+import { FormSuccess } from "@/components/formSuccess"
+import { CardWrapper } from "@/components/auth/cardWrapper"
 
 export const ResetForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>("")
+  const [success, setSuccess] = useState<string | undefined>("")
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<z.infer<typeof ResetSchema>>({
     resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: "",
     },
-  });
+  })
 
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
-    setError("");
-    setSuccess("");
+    setError("")
+    setSuccess("")
 
     startTransition(async () => {
-      const response = await reset(values);
-      setError(response?.error);
-      setSuccess(response?.success);
-    });
-  };
+      const response = await reset(values)
+      setError(response?.error)
+      setSuccess(response?.success)
+    })
+  }
 
   return (
     <CardWrapper
@@ -81,5 +81,5 @@ export const ResetForm = () => {
         </form>
       </Form>
     </CardWrapper>
-  );
-};
+  )
+}

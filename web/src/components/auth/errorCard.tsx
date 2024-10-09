@@ -1,6 +1,6 @@
-import { TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react"
 
-import { CardWrapper } from "@/components/auth/cardWrapper";
+import { CardWrapper } from "@/components/auth/cardWrapper"
 
 export const ErrorCard = () => {
   return (
@@ -13,5 +13,5 @@ export const ErrorCard = () => {
         <TriangleAlert className="w-10 h-10 text-destructive" />
       </div>
     </CardWrapper>
-  );
-};
+  )
+}

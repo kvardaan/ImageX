@@ -11,17 +11,18 @@ import { sendVerificationEmail } from "@/lib/utils/mail"
 import { generateVerificationToken } from "@/lib/utils/tokens"
 
 type LoginActionResponse = Promise<
-  | { error?: undefined, success?: string }
-  | { error?: string, success?: undefined }
+  | { error?: undefined; success?: string }
+  | { error?: string; success?: undefined }
 >
 
-export const login = async (values: z.infer<typeof LoginSchema>): Promise<LoginActionResponse> => {
+export const login = async (
+  values: z.infer<typeof LoginSchema>
+): Promise<LoginActionResponse> => {
   const validatedFields = LoginSchema.safeParse(values)
 
-  if (!validatedFields.success)
-    return { error: "Invalid fields!" }
+  if (!validatedFields.success) return { error: "Invalid fields!" }
 
-  const { email, password } = validatedFields.data;
+  const { email, password } = validatedFields.data
 
   const existingUser = await getUserByEmail(email)
   if (!existingUser || !existingUser.email || !existingUser.password)
@@ -36,7 +37,9 @@ export const login = async (values: z.infer<typeof LoginSchema>): Promise<LoginA
 
   try {
     await signIn("credentials", {
-      email, password, redirectTo: DEFAULT_LOGIN_REDIRECT
+      email,
+      password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
     })
   } catch (error: Error | unknown) {
     if (error instanceof AuthError) {

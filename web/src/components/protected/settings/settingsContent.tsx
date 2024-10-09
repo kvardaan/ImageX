@@ -6,9 +6,9 @@ import { User } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useCurrentUser } from "@/hooks/useCurrentUser"
 import { SettingsCard } from "@/components/protected/settings/settingsCard"
 import { ChangeAvatar } from "@/components/protected/settings/changeAvatar"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 export const SettingsContent = () => {
   const user = useCurrentUser()

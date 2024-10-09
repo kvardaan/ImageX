@@ -10,52 +10,52 @@ const client = createClient({
     port: Number(config.redisPort),
     connectTimeout: 20000,
   },
-});
+})
 
 const connectWithRetry = async (retries: number = 5) => {
   for (let i = 0; i < retries; i++) {
     try {
-      await client.connect();
+      await client.connect()
 
-      console.log("Connected to Redis server successfully");
+      console.log("Connected to Redis server successfully")
 
-      break;
+      break
     } catch (error) {
-      console.error(`Redis connection attempt failed: ${error}`);
+      console.error(`Redis connection attempt failed: ${error}`)
 
       if (i < retries - 1) {
-        console.log(`Retrying connection (${i + 1}/${retries})...`);
+        console.log(`Retrying connection (${i + 1}/${retries})...`)
 
-        await new Promise((res) => setTimeout(res, 2000));
+        await new Promise((res) => setTimeout(res, 2000))
       } else {
-        console.error("Failed to connect to Redis after multiple attempts");
+        console.error("Failed to connect to Redis after multiple attempts")
       }
     }
   }
-};
+}
 
-client.on("error", (err: string) => console.error(`Redis Client Error: ${err}`));
+client.on("error", (err: string) => console.error(`Redis Client Error: ${err}`))
 
-connectWithRetry();
+connectWithRetry()
 
 /**
  * Caches the data
  */
 export const cacheData = async (key: string, data: string, ttl: number) => {
-  await client.set(key, JSON.stringify(data), { EX: ttl });
-};
+  await client.set(key, JSON.stringify(data), { EX: ttl })
+}
 
 /**
  * Gets the cached data
  */
 export const getCachedData = async (key: string) => {
-  const data = await client.get(key);
-  return data ? JSON.parse(data) : null;
-};
+  const data = await client.get(key)
+  return data ? JSON.parse(data) : null
+}
 
 /**
  * Deletes the cached data
  */
 export const deleteCachedData = async (key: string) => {
-  await client.del(key);
-};
+  await client.del(key)
+}

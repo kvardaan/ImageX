@@ -1,9 +1,9 @@
-import { Metadata } from "next";
+import { Metadata } from "next"
 
-import { RegisterForm } from "@/components/auth/registerForm";
+import { RegisterForm } from "@/components/auth/registerForm"
 
-export const metadata: Metadata = { title: "Register" };
+export const metadata: Metadata = { title: "Register" }
 
 export default function Page() {
-  return <RegisterForm />;
+  return <RegisterForm />
 }

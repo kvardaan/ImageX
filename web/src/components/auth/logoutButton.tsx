@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react"
+import { signOut } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button"
 
 export const LogoutButton = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const onClick = () => {
-    signOut();
-    router.push("/");
-  };
+    signOut()
+    router.push("/")
+  }
 
   return (
     <div onClick={onClick} className="cursor-pointer w-full">
@@ -24,5 +24,5 @@ export const LogoutButton = () => {
         <span>Sign out</span>
       </Button>
     </div>
-  );
-};
+  )
+}

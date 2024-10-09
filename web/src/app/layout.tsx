@@ -1,11 +1,11 @@
-import { Toaster } from "sonner";
-import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
+import { Toaster } from "sonner"
+import type { Metadata } from "next"
+import { SessionProvider } from "next-auth/react"
 
-import "@/app/globals.css";
-import { auth } from "@/auth";
-import { poppins } from "@/lib/utils/fonts";
-import { ThemeProvider } from "@/components/theme-provider";
+import "@/app/globals.css"
+import { auth } from "@/auth"
+import { poppins } from "@/lib/utils/fonts"
+import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
   title: {
@@ -13,16 +13,16 @@ export const metadata: Metadata = {
     default: "ImageX",
   },
   description: "A simple image processing service",
-};
+}
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export default async function RootLayout({
   children,
 }: Readonly<RootLayoutProps>) {
-  const session = await auth();
+  const session = await auth()
 
   return (
     <html lang="en">
@@ -37,5 +37,5 @@ export default async function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

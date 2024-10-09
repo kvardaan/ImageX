@@ -1,8 +1,8 @@
-import { Metadata } from "next";
+import { Metadata } from "next"
 
-import { Heading } from "@/components/heading";
+import { Heading } from "@/components/heading"
 
-export const metadata: Metadata = { title: "Overview" };
+export const metadata: Metadata = { title: "Overview" }
 
 export default function Page() {
   return (
@@ -10,5 +10,5 @@ export default function Page() {
       <Heading title="Overview" />
       <div className="w-full gap-2 mt-4"></div>
     </div>
-  );
+  )
 }

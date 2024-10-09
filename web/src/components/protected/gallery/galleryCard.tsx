@@ -48,16 +48,15 @@ export const GalleryCard = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
             {images &&
               images.map((image) => (
-                <div key={image.id} className="relative aspect-square">
-                  <img
-                    src={image.imageUrl as string}
-                    alt={image.id.toString()}
-                    className="rounded-lg"
-                  />
-                </div>
+                <img
+                  key={image.id}
+                  src={image.imageUrl as string}
+                  alt={image.id.toString()}
+                  className="rounded-lg aspect-square object-contain border-2 dark:border-white/25 p-2"
+                />
               ))}
           </div>
         )}

@@ -1,9 +1,9 @@
-import { Metadata } from "next";
+import { Metadata } from "next"
 
-import { LoginForm } from "@/components/auth/loginForm";
+import { LoginForm } from "@/components/auth/loginForm"
 
-export const metadata: Metadata = { title: "Login" };
+export const metadata: Metadata = { title: "Login" }
 
 export default function Page() {
-  return <LoginForm />;
+  return <LoginForm />
 }

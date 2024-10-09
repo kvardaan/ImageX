@@ -1,9 +1,9 @@
-import { Metadata } from "next";
+import { Metadata } from "next"
 
-import { Heading } from "@/components/heading";
-import { GalleryCard } from "@/components/protected/gallery/galleryCard";
+import { Heading } from "@/components/heading"
+import { GalleryCard } from "@/components/protected/gallery/galleryCard"
 
-export const metadata: Metadata = { title: "Overview" };
+export const metadata: Metadata = { title: "Overview" }
 
 export default function Page() {
   return (
@@ -13,5 +13,5 @@ export default function Page() {
         <GalleryCard />
       </div>
     </div>
-  );
+  )
 }

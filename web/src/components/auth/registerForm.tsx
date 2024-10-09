@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { useState, useTransition } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod"
+import { useForm } from "react-hook-form"
+import { useState, useTransition } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 import {
   Form,
@@ -12,19 +12,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { SignUpSchema } from "@/schemas/auth";
-import { register } from "@/actions/register";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/formError";
-import { FormSuccess } from "@/components/formSuccess";
-import { CardWrapper } from "@/components/auth/cardWrapper";
+} from "@/components/ui/form"
+import { SignUpSchema } from "@/schemas/auth"
+import { register } from "@/actions/register"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { FormError } from "@/components/formError"
+import { FormSuccess } from "@/components/formSuccess"
+import { CardWrapper } from "@/components/auth/cardWrapper"
 
 export const RegisterForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>("")
+  const [success, setSuccess] = useState<string | undefined>("")
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
@@ -33,18 +33,18 @@ export const RegisterForm = () => {
       email: "",
       password: "",
     },
-  });
+  })
 
   const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
-    setError("");
-    setSuccess("");
+    setError("")
+    setSuccess("")
 
     startTransition(async () => {
-      const response = await register(values);
-      setError(response.error);
-      setSuccess(response.success);
-    });
-  };
+      const response = await register(values)
+      setError(response.error)
+      setSuccess(response.success)
+    })
+  }
 
   return (
     <CardWrapper
@@ -124,5 +124,5 @@ export const RegisterForm = () => {
         </form>
       </Form>
     </CardWrapper>
-  );
-};
+  )
+}

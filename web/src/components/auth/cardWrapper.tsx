@@ -1,21 +1,16 @@
-"use client";
+"use client"
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Header } from "@/components/auth/header";
-import { Social } from "@/components/auth/social";
-import { BackButton } from "@/components/auth/backButton";
+import { Header } from "@/components/auth/header"
+import { Social } from "@/components/auth/social"
+import { BackButton } from "@/components/auth/backButton"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
 interface CardWrapperProps {
-  children: React.ReactNode;
-  headerLabel: string;
-  backButtonLabel: string;
-  backButtonHref: string;
-  showSocial?: boolean;
+  children: React.ReactNode
+  headerLabel: string
+  backButtonLabel: string
+  backButtonHref: string
+  showSocial?: boolean
 }
 
 export const CardWrapper = ({
@@ -40,5 +35,5 @@ export const CardWrapper = ({
         <BackButton href={backButtonHref} label={backButtonLabel} />
       </CardFooter>
     </Card>
-  );
-};
+  )
+}

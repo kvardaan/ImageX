@@ -1,9 +1,5 @@
 import { Menu, Home, Settings, Images } from "lucide-react"
 
-import { auth } from "@/auth"
-import { SideBarItem } from "@/components/sideBarItem"
-import { LogoutButton } from "@/components/auth/logoutButton"
-import { ProfileButton } from "@/components/protected/profileButton"
 import {
   Sheet,
   SheetTitle,
@@ -11,6 +7,10 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { auth } from "@/auth"
+import { SideBarItem } from "@/components/sideBarItem"
+import { LogoutButton } from "@/components/auth/logoutButton"
+import { ProfileButton } from "@/components/protected/profileButton"
 
 export const SideModal = async () => {
   const session = await auth()

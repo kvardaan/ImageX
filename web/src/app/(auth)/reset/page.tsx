@@ -1,11 +1,9 @@
-import { Metadata } from "next";
+import { Metadata } from "next"
 
-import { ResetForm } from "@/components/auth/resetForm";
+import { ResetForm } from "@/components/auth/resetForm"
 
-export const metadata: Metadata = { title: "Reset Password" };
+export const metadata: Metadata = { title: "Reset Password" }
 
-const Page = () => {
-  return <ResetForm />;
-};
-
-export default Page;
+export default function Page() {
+  return <ResetForm />
+}
