@@ -5,7 +5,6 @@ import { Image } from "@/lib/types/image"
 import { Button } from "@/components/ui/button"
 
 interface ImageCardProps {
-  key: number
   image: Image
 }
 
@@ -20,15 +19,15 @@ function formatImageMetadata(metadata: string) {
     fileSizeInMb >= 1
       ? `${fileSizeInMb.toFixed(2)} MB`
       : fileSizeInKb >= 1
-        ? `${fileSizeInKb.toFixed(2)} KB`
-        : `${fileSizeInBytes} bytes`
+      ? `${fileSizeInKb.toFixed(2)} KB`
+      : `${fileSizeInBytes} bytes`
 
   fileType = fileType.replace("image/", "")
 
   return { fileSize: fileSizeString, fileType }
 }
 
-export const ImageCard = ({ key, image }: ImageCardProps) => {
+export const ImageCard = ({ image }: ImageCardProps) => {
   const { fileSize, fileType } = formatImageMetadata(
     JSON.stringify(image.metadata)
   )
@@ -40,7 +39,6 @@ export const ImageCard = ({ key, image }: ImageCardProps) => {
   return (
     <div className="rounded-md group/image hover:shadow-lg transition duration-200 shadow-input dark:shadow-white/25 p-4 dark:bg-black bg-white dark:border-white/25 border justify-between flex flex-col">
       <img
-        key={key}
         src={image.imageUrl as string}
         alt={image.id.toString()}
         className="rounded-md aspect-square object-contain group-hover/image:scale-105 group-hover/image:ease-in-out group-hover/image:duration-300"
