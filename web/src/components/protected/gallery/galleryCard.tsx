@@ -7,6 +7,7 @@ import { PlusCircle, ImageOff } from "lucide-react"
 import { Image } from "@/lib/types/image"
 import { Button } from "@/components/ui/button"
 import { AddImage } from "@/components/protected/gallery/addImage"
+import { ImageCard } from "@/components/protected/gallery/imageCard"
 
 export const GalleryCard = () => {
   const [images, setImages] = useState<Image[] | null>()
@@ -50,14 +51,7 @@ export const GalleryCard = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
             {images &&
-              images.map((image) => (
-                <img
-                  key={image.id}
-                  src={image.imageUrl as string}
-                  alt={image.id.toString()}
-                  className="rounded-lg aspect-square object-contain border-2 dark:border-white/25 p-2"
-                />
-              ))}
+              images.map((image) => <ImageCard key={image.id} image={image} />)}
           </div>
         )}
       </div>
