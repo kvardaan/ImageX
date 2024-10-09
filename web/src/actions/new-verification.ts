@@ -36,8 +36,7 @@ export const newVerification = async (token: string) => {
 
     })
   }
-  catch (error) {
-    console.log(`Error verifying user: ${String(error)}`);
+  catch {
     return { error: "Something went wrong!" }
   }
 
