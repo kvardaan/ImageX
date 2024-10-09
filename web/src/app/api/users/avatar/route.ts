@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (putUrl.error || response.status !== StatusCodes.OK) {
-      return new NextResponse(JSON.stringify({ message: "Error uploading image!" }), { status: StatusCodes.FAILED_DEPENDENCY })
+      return new NextResponse(JSON.stringify({ message: "Error uploading avatar!" }), { status: StatusCodes.FAILED_DEPENDENCY })
     }
 
     const avatarPublicUrl = getPublicUrl(String(fileName))

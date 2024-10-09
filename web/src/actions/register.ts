@@ -22,8 +22,7 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
 
   try {
     await createUser({ ...validatedFields.data, password: hashedPassword })
-  } catch (error) {
-    console.log(`Error creating user: ${String(error)}`);
+  } catch {
     return { error: "Something went wrong!" }
   }
 

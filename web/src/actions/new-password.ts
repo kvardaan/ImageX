@@ -47,8 +47,7 @@ export const newPassword = async (values: z.infer<typeof NewPasswordSchema>, tok
         where: { id: existingToken.id }
       })
     })
-  } catch (error) {
-    console.log(`Error changing user's password: ${String(error)}`);
+  } catch {
     return { error: "Something went wrong!" }
   }
 

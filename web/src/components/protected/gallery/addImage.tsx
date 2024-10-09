@@ -22,10 +22,10 @@ interface AddImageProps {
 }
 
 export const AddImage = ({ children }: AddImageProps) => {
+  const user = useCurrentUser()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const user = useCurrentUser()
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -56,17 +56,20 @@ export const AddImage = ({ children }: AddImageProps) => {
 
     const formData = new FormData()
     formData.append("userId", user?.id)
-    formData.append("fileName", user?.id)
-    formData.append("contentType", selectedFile.type)
+    formData.append("fileName", `${user?.id}/${new Date().getTime()}`)
     formData.append("file", selectedFile)
 
     try {
-      await fetch("api/users/images", {
+      const response = await fetch("api/images", {
         method: "post",
         body: formData,
       })
+      const data = await response.json()
 
-      toast.success("Image added successfully!")
+      if (data.error) toast.error(data.error)
+      else toast.success("Image added successfully!")
+      setPreview(null)
+      setSelectedFile(null)
     } catch {
       toast.error("Error adding image!")
     }

@@ -25,8 +25,7 @@ export async function GET({ params }: { params: { id: number } }) {
     });
 
     return new NextResponse(JSON.stringify(image), { status: StatusCodes.OK });
-  } catch (error) {
-    console.error(`Server Error: ${JSON.stringify(error)}`)
+  } catch {
     return new NextResponse(JSON.stringify({ message: "Internal Server Error" }), { status: StatusCodes.INTERNAL_SERVER_ERROR })
   }
 }
