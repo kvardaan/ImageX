@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest) {
     });
 
     return NextResponse.json({ status: StatusCodes.CREATED });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Something went wrong!" }, { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 }
