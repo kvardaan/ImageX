@@ -1,23 +1,16 @@
 import { StatusCodes } from "http-status-codes"
 import { NextRequest, NextResponse } from "next/server"
 
+import {
+  getFileNameWithFileType,
+  computeSHA256,
+  getPublicUrl,
+} from "@/lib/utils"
 import { auth } from "@/auth"
 import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
 import { getSignedPutUrl } from "@/lib/clients/aws.S3"
-import { getFileNameWithFileType, computeSHA256, getPublicUrl } from "@/lib/utils"
 
-/**
- * @description
- * Returns a list of all images of a user
- * @example
- *   GET /api/images
- *   => {{ id: 1, url: "https://example.com/image.jpg" }, ...}
- * @body
- *   {
- *     id: number,
- *   }
- */
 export async function GET() {
   const session = await auth()
   try {
@@ -38,7 +31,10 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData()
   const userId = formData.get("userId") as string
   const imageFile = formData.get("file") as File
-  const fileName = getFileNameWithFileType(formData.get("fileName") as string, imageFile.type)
+  const fileName = getFileNameWithFileType(
+    formData.get("fileName") as string,
+    imageFile.type
+  )
 
   try {
     const putUrl = await getSignedPutUrl({
@@ -54,7 +50,7 @@ export async function POST(request: NextRequest) {
       body: imageFile,
       headers: {
         "Content-Type": imageFile.type,
-      }
+      },
     })
 
     if (putUrl.error || response.status !== StatusCodes.OK) {
