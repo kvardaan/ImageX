@@ -8,16 +8,20 @@ import { Image } from "@/lib/types/image"
 import { Button } from "@/components/ui/button"
 import { AddImage } from "@/components/protected/gallery/addImage"
 import { ImageCard } from "@/components/protected/gallery/imageCard"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const GalleryCard = () => {
   const [images, setImages] = useState<Image[] | null>()
+  const [isLoading, setIsLoading] = useState<boolean>()
 
   const fetchImages = async () => {
+    setIsLoading(true)
     try {
       const response = await fetch("api/images")
       const data = await response.json()
 
       setImages(data)
+      setIsLoading(false)
     } catch {
       toast.error("Error fetching images!")
     }
@@ -40,7 +44,9 @@ export const GalleryCard = () => {
 
       {/* Images */}
       <div className="min-h-[425px] flex flex-col items-center justify-center gap-y-2 bg-white dark:bg-black/50 border dark:border-white/25 rounded-lg">
-        {images?.length === 0 ? (
+        {isLoading ? (
+          <Skeleton className="h-10 w-10" />
+        ) : images?.length === 0 ? (
           <div className="text-center py-10 leading-8">
             <ImageOff className="mx-auto h-12 w-12" />
             <h3 className="mt-2 text-md font-medium">No images</h3>

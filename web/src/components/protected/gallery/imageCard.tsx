@@ -33,7 +33,7 @@ export const ImageCard = ({ image }: ImageCardProps) => {
   )
 
   const downloadImage = () => {
-    saveAs(image.userId)
+    saveAs(image.id.toString())
   }
 
   return (

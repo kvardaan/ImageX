@@ -72,6 +72,8 @@ export const ChangeAvatar = ({
 
       setUserProfileUrl(getPublicUrl(userId))
       toast.success("Avatar changed successfully!")
+      setPreview(null)
+      setSelectedFile(null)
     } catch {
       toast.error("Error updating avatar!")
     }
