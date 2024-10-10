@@ -5,18 +5,18 @@ import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
 import { deleteObject } from "@/lib/clients/aws.S3"
 
-export async function GET({ params }: { params: { id: number } }) {
-  const id = params.id
+export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
+  const id = Number(params.id)
 
   try {
     const image = await prisma.image.findUnique({
       where: { id },
     })
 
-    return new NextResponse(JSON.stringify(image), { status: StatusCodes.OK })
+    return NextResponse.json({ image }, { status: StatusCodes.OK })
   } catch {
-    return new NextResponse(
-      JSON.stringify({ message: "Internal Server Error" }),
+    return NextResponse.json(
+      { message: "Internal Server Error" },
       { status: StatusCodes.INTERNAL_SERVER_ERROR }
     )
   }

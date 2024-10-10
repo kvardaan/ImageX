@@ -27,8 +27,8 @@ function formatImageMetadata(metadata: string) {
     fileSizeInMb >= 1
       ? `${fileSizeInMb.toFixed(2)} MB`
       : fileSizeInKb >= 1
-        ? `${fileSizeInKb.toFixed(2)} KB`
-        : `${fileSizeInBytes} bytes`
+      ? `${fileSizeInKb.toFixed(2)} KB`
+      : `${fileSizeInBytes} bytes`
 
   fileType = fileType.replace("image/", "")
 
