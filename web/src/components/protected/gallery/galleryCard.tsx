@@ -33,13 +33,13 @@ export const GalleryCard = () => {
   return (
     <div className="w-full flex flex-col gap-y-2">
       {/* Add Image Button */}
-      <AddImage>
-        <div className="flex flex-row items-center sm:items-end justify-center sm:justify-end">
+      <div className="flex flex-row items-center sm:items-end justify-center sm:justify-end">
+        <AddImage>
           <Button variant="default">
             <PlusCircle className="mr-2 h-4 w-4" /> Add Image
           </Button>
-        </div>
-      </AddImage>
+        </AddImage>
+      </div>
 
       {/* Images */}
       <div className="min-h-[425px] flex flex-col items-center justify-center gap-y-2 bg-white dark:bg-black/50 border dark:border-white/25 rounded-lg">

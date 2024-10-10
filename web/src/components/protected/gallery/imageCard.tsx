@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Image } from "@/lib/types/image"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
 interface ImageCardProps {
@@ -35,12 +36,17 @@ function formatImageMetadata(metadata: string) {
 }
 
 export const ImageCard = ({ image }: ImageCardProps) => {
+  const router = useRouter()
   const { fileSize, fileType } = formatImageMetadata(
     JSON.stringify(image.metadata)
   )
 
   const downloadImage = () => {
     saveAs(image.id.toString(), image.imageUrl?.split("imagex.user/").pop())
+  }
+
+  const editImage = async () => {
+    router.push(`gallery/${image.id}`)
   }
 
   const deleteImage = async () => {
@@ -61,15 +67,13 @@ export const ImageCard = ({ image }: ImageCardProps) => {
   }
 
   return (
-    <div className="rounded-md group/image hover:shadow-lg transition duration-200 shadow-input dark:shadow-white/25 p-4 dark:bg-black bg-white dark:border-white/25 border justify-between flex flex-col">
+    <div className="rounded-md flex flex-col justify-between group/image hover:shadow-lg transition duration-200 shadow-input dark:shadow-white/25 p-4 dark:bg-black bg-white dark:border-white/25 border text-black/50 dark:text-white/50 text-sm">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <EllipsisVertical className="relative top-0 -right-0 h-5 w-5" />
+        <DropdownMenuTrigger asChild className="ml-auto">
+          <EllipsisVertical className="relative top-0 right-0 h-5 w-5 group-hover/image:text-black dark:group-hover/image:text-white" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-fit">
-          <DropdownMenuCheckboxItem
-            onClick={() => console.log(`Edited: ${image.id}`)}
-          >
+          <DropdownMenuCheckboxItem onClick={editImage}>
             Edit
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem onClick={deleteImage}>
@@ -82,15 +86,14 @@ export const ImageCard = ({ image }: ImageCardProps) => {
         alt={image.id.toString()}
         className="rounded-md aspect-square object-contain"
       />
-      {/* group-hover/image:scale-105 group-hover/image:ease-in-out group-hover/image:duration-300 */}
-      <div className="flex items-center justify-between border-t pt-3">
+      <div className="flex items-center justify-between pt-3 group-hover/image:text-black dark:group-hover/image:text-white">
         <div className="flex flex-col gap-y-2">
           <p>Size: {fileSize}</p>
           <p>Type: {fileType}</p>
         </div>
         <Button
           variant="ghost"
-          className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300"
+          className="font-sans font-normal"
           onClick={downloadImage}
         >
           <Download />
