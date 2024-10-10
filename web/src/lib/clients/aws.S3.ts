@@ -5,6 +5,7 @@ import {
   PutObjectCommand,
   NoSuchKey,
   S3ServiceException,
+  DeleteObjectCommand,
 } from "@aws-sdk/client-s3"
 
 import { config } from "@/lib/utils/config"
@@ -97,6 +98,29 @@ export const getSignedPutUrl = async ({
     if (error instanceof S3ServiceException) {
       return {
         error: `Error uploading object! ${error.name}: ${JSON.stringify(error.message)}`,
+      }
+    } else {
+      return { error: `Something went wrong! ${JSON.stringify(error)}` }
+    }
+  }
+}
+
+/**
+ * Deletes an object from a specified S3 bucket.
+ */
+export const deleteObject = async (bucketName: string, key: string) => {
+  const deleteObjectCommand = new DeleteObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  })
+
+  try {
+    await s3Client.send(deleteObjectCommand)
+    return { sucess: true }
+  } catch (error) {
+    if (error instanceof S3ServiceException) {
+      return {
+        error: `Error deleting object! ${error.name}: ${JSON.stringify(error.message)}`,
       }
     } else {
       return { error: `Something went wrong! ${JSON.stringify(error)}` }

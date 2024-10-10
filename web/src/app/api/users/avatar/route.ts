@@ -1,16 +1,23 @@
 import { StatusCodes } from "http-status-codes"
 import { NextRequest, NextResponse } from "next/server"
 
+import {
+  getFileNameWithFileType,
+  computeSHA256,
+  getPublicUrl,
+} from "@/lib/utils"
 import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
 import { getSignedPutUrl } from "@/lib/clients/aws.S3"
-import { getFileNameWithFileType, computeSHA256, getPublicUrl } from "@/lib/utils"
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
   const userId = formData.get("userId") as string
   const imageFile = formData.get("file") as File
-  const fileName = getFileNameWithFileType(formData.get("fileName") as string, imageFile.type)
+  const fileName = getFileNameWithFileType(
+    formData.get("fileName") as string,
+    imageFile.type
+  )
 
   try {
     const putUrl = await getSignedPutUrl({
@@ -26,7 +33,7 @@ export async function POST(request: NextRequest) {
       body: imageFile,
       headers: {
         "Content-Type": imageFile.type,
-      }
+      },
     })
 
     if (putUrl.error || response.status !== StatusCodes.OK) {
