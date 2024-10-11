@@ -2,6 +2,7 @@
 
 import * as z from "zod"
 import { useForm } from "react-hook-form"
+import { Eye, EyeOff } from "lucide-react"
 import { useState, useTransition } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -25,6 +26,7 @@ export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("")
   const [success, setSuccess] = useState<string | undefined>("")
   const [isPending, startTransition] = useTransition()
+  const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
@@ -44,6 +46,10 @@ export const RegisterForm = () => {
       setError(response.error)
       setSuccess(response.success)
     })
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
   }
 
   return (
@@ -104,12 +110,31 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      type="password"
-                      placeholder="********"
-                    />
+                    <div className="relative">
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        type={showPassword ? "text" : "password"}
+                        placeholder="********"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent hover:text-black dark:hover:text-white text-black/50 dark:text-white/50"
+                        onClick={togglePasswordVisibility}
+                        disabled={isPending}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                        <span className="sr-only">
+                          {showPassword ? "Hide password" : "Show password"}
+                        </span>
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
