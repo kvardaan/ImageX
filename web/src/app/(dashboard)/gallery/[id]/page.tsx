@@ -1,5 +1,9 @@
+import { Metadata } from "next"
+
 import { Heading } from "@/components/heading"
 import { EditImage } from "@/components/protected/gallery/edit/editImage"
+
+export const metadata: Metadata = { title: "Edit Image" }
 
 export default function Page({ params }: { params: { id: number } }) {
   return (

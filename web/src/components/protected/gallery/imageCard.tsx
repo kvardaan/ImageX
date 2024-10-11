@@ -8,13 +8,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Image } from "@/lib/types/image"
+import { ImageType } from "@/lib/types/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { formatImageMetadata } from "@/lib/utils/image"
 
 interface ImageCardProps {
-  image: Image
+  image: ImageType
 }
 
 export const ImageCard = ({ image }: ImageCardProps) => {

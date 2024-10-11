@@ -4,13 +4,13 @@ import { toast } from "sonner"
 import { useState, useEffect } from "react"
 import { PlusCircle, ImageOff } from "lucide-react"
 
-import { Image } from "@/lib/types/image"
+import { ImageType } from "@/lib/types/image"
 import { Button } from "@/components/ui/button"
 import { AddImage } from "@/components/protected/gallery/addImage"
 import { ImageCard } from "@/components/protected/gallery/imageCard"
 
 export const GalleryCard = () => {
-  const [images, setImages] = useState<Image[] | null>()
+  const [images, setImages] = useState<ImageType[] | null>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const fetchImages = async () => {
