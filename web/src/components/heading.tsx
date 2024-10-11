@@ -12,7 +12,7 @@ export function Heading({ title, className, children }: HeadingProps) {
     <h1
       className={cn(
         lusitana.className,
-        "font-medium text-4xl m-2 text-center md:!text-left",
+        "font-medium text-4xl m-2 text-center md:text-left",
         className
       )}
     >
