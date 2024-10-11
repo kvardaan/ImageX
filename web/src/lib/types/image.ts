@@ -1,4 +1,4 @@
-export type Image = {
+export type ImageType = {
   id: number
   imageUrl: string | null
   metadata: JSON

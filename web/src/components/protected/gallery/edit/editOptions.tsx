@@ -14,7 +14,10 @@ import { Transformations } from "@/components/protected/gallery/edit/editImage"
 
 interface EditOptionsProps {
   transformations: Transformations
-  handleTransformationChange: (key: string, value: any) => void
+  handleTransformationChange: (
+    key: keyof Transformations,
+    value: number | boolean | string | JSON
+  ) => void
 }
 
 export const EditOptions = ({
@@ -22,29 +25,37 @@ export const EditOptions = ({
   handleTransformationChange,
 }: EditOptionsProps) => {
   return (
-    <ScrollArea className="w-full h-full flex flex-col justify-between gap-y-4 p-4">
-      <div className="space-y-4">
+    <ScrollArea className="w-full h-full flex flex-col justify-between gap-y-4 p-2">
+      <div className="space-y-6 p-2">
         {/* Resize */}
         <div className="flex flex-col gap-y-3">
-          <Label>Resize</Label>
+          <Label className="flex items-center justify-between">
+            <span>Resize</span>
+            <span>{transformations.resize}&#37;</span>
+          </Label>
           <Slider
             value={[transformations.resize]}
             onValueChange={([value]) =>
               handleTransformationChange("resize", value)
             }
-            max={200}
+            defaultValue={[100]}
+            max={100}
             step={1}
           />
         </div>
 
         {/* Rotate */}
         <div className="flex flex-col gap-y-3">
-          <Label>Rotate</Label>
+          <Label className="flex items-center justify-between">
+            <span>Rotate</span>
+            <span>{transformations.rotate}&#176;</span>
+          </Label>
           <Slider
             value={[transformations.rotate]}
             onValueChange={([value]) =>
               handleTransformationChange("rotate", value)
             }
+            defaultValue={[0]}
             max={360}
             step={15}
           />
@@ -88,12 +99,16 @@ export const EditOptions = ({
 
         {/* Compress */}
         <div className="flex flex-col gap-y-3">
-          <Label>Compress</Label>
+          <Label className="flex items-center justify-between">
+            <span>Compress</span>
+            <span>{transformations.compress}&#37;</span>
+          </Label>
           <Slider
             value={[transformations.compress]}
             onValueChange={([value]) =>
               handleTransformationChange("compress", value)
             }
+            defaultValue={[0]}
             min={50}
             max={100}
             step={10}

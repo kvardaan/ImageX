@@ -3,7 +3,7 @@ import { Metadata } from "next"
 import { Heading } from "@/components/heading"
 import { GalleryCard } from "@/components/protected/gallery/galleryCard"
 
-export const metadata: Metadata = { title: "Overview" }
+export const metadata: Metadata = { title: "Gallery" }
 
 export default function Page() {
   return (
