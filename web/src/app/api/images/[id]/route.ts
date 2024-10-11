@@ -5,7 +5,10 @@ import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
 import { deleteObject } from "@/lib/clients/aws.S3"
 
-export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: number } }
+) {
   const id = Number(params.id)
 
   try {
