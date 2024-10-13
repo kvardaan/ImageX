@@ -75,7 +75,7 @@ export const EditOptions = ({
 
         {/* Flip */}
         <div className="flex items-center justify-between">
-          <Label htmlFor="flip">Flip</Label>
+          <Label htmlFor="flip">Vertical Flip</Label>
           <Switch
             id="flip"
             checked={transformations.flip}
@@ -87,7 +87,7 @@ export const EditOptions = ({
 
         {/* Mirror */}
         <div className="flex items-center justify-between">
-          <Label htmlFor="mirror">Mirror</Label>
+          <Label htmlFor="mirror">Horizontal Mirror</Label>
           <Switch
             id="mirror"
             checked={transformations.mirror}

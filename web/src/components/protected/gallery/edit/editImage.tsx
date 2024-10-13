@@ -23,10 +23,8 @@ export interface Transformations {
 
 export const EditImage = ({ id }: { id: number }) => {
   const [image, setImage] = useState<ImageType | null>(null)
-  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null)
-  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
   const [transformations, setTransformations] = useState<Transformations>({
-    resize: 100,
+    resize: 0,
     crop: { x: 0, y: 0, width: 100, height: 100 },
     rotate: 0,
     watermark: "",
@@ -36,7 +34,9 @@ export const EditImage = ({ id }: { id: number }) => {
     format: "",
     filter: "none",
   })
+  const [isApplying, setIsApplying] = useState<boolean>(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const imageRef = useRef<HTMLImageElement>(null)
 
   const fetchImage = useCallback(async () => {
     try {
@@ -47,9 +47,6 @@ export const EditImage = ({ id }: { id: number }) => {
         toast.error(data.error)
       } else {
         setImage(data.image)
-        // setOriginalImageUrl(data.image.imageUrl)
-        // setPreviewImageUrl(data.image.imageUrl)
-
         if (data.image?.metadata) {
           const { fileType } = formatImageMetadata(
             JSON.stringify(data.image.metadata)
@@ -74,73 +71,112 @@ export const EditImage = ({ id }: { id: number }) => {
     setTransformations((prev) => ({ ...prev, [key]: value }))
   }
 
-  useEffect(() => {
-    if (originalImageUrl) {
-      const img = new Image()
-      img.crossOrigin = "anonymous"
-      img.onload = () => {
-        if (canvasRef.current) {
-          const ctx = canvasRef.current.getContext("2d")
-          if (ctx) {
-            canvasRef.current.width = img.width
-            canvasRef.current.height = img.height
+  const applyTransformationsToCanvas = useCallback(() => {
+    if (canvasRef.current && imageRef.current) {
+      const ctx = canvasRef.current.getContext("2d")
+      if (ctx) {
+        const img = imageRef.current
 
-            // Apply transformations
-            ctx.save()
-            ctx.translate(
-              canvasRef.current.width / 2,
-              canvasRef.current.height / 2
-            )
+        // Reset canvas
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
 
-            if (transformations.rotate !== 0) {
-              ctx.rotate((transformations.rotate * Math.PI) / 180)
-            }
+        // Set canvas size based on resize
+        const scale = transformations.resize / 100
+        canvasRef.current.width = img.width * scale
+        canvasRef.current.height = img.height * scale
 
-            if (transformations.flip) {
-              ctx.scale(1, -1)
-            }
+        // Apply transformations
+        ctx.translate(canvasRef.current.width / 2, canvasRef.current.height / 2)
+        ctx.rotate((transformations.rotate * Math.PI) / 180)
+        ctx.scale(
+          transformations.mirror ? -1 : 1,
+          transformations.flip ? -1 : 1
+        )
+        ctx.translate(
+          -canvasRef.current.width / 2,
+          -canvasRef.current.height / 2
+        )
 
-            ctx.drawImage(
-              img,
-              -img.width / 2,
-              -img.height / 2,
-              img.width,
-              img.height
-            )
-            ctx.restore()
+        // Draw image
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        )
 
-            // Apply filters
-            if (transformations.filter === "grayscale") {
-              const imageData = ctx.getImageData(
-                0,
-                0,
-                canvasRef.current.width,
-                canvasRef.current.height
-              )
-              for (let i = 0; i < imageData.data.length; i += 4) {
-                const avg =
-                  (imageData.data[i] +
-                    imageData.data[i + 1] +
-                    imageData.data[i + 2]) /
-                  3
-                imageData.data[i] = avg
-                imageData.data[i + 1] = avg
-                imageData.data[i + 2] = avg
-              }
-              ctx.putImageData(imageData, 0, 0)
-            }
-
-            // Note: Blur and sharpen are complex operations that are difficult to implement
-            // efficiently in JavaScript. For a production app, you might want to use a library
-            // like CamanJS for these operations.
-
-            setPreviewImageUrl(canvasRef.current.toDataURL())
-          }
+        // Apply watermark
+        if (transformations.watermark) {
+          ctx.font = "20px Arial"
+          ctx.fillStyle = "rgba(0, 100, 0, 0.5)"
+          ctx.fillText(transformations.watermark, 100, 30)
         }
+
+        // Apply crop
+        if (transformations.crop) {
+          ctx.drawImage(
+            img,
+            transformations.crop.x,
+            transformations.crop.y,
+            transformations.crop.width,
+            transformations.crop.height,
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          )
+        }
+
+        // Apply filters
+        if (transformations.filter === "grayscale") {
+          const imageData = ctx.getImageData(
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          )
+          for (let i = 0; i < imageData.data.length; i += 4) {
+            const avg =
+              (imageData.data[i] +
+                imageData.data[i + 1] +
+                imageData.data[i + 2]) /
+              3
+            imageData.data[i] = avg
+            imageData.data[i + 1] = avg
+            imageData.data[i + 2] = avg
+          }
+          ctx.putImageData(imageData, 0, 0)
+        } else if (transformations.filter === "sepia") {
+          const imageData = ctx.getImageData(
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          )
+          for (let i = 0; i < imageData.data.length; i += 4) {
+            const r = imageData.data[i]
+            const g = imageData.data[i + 1]
+            const b = imageData.data[i + 2]
+            imageData.data[i] = r * 0.393 + g * 0.769 + b * 0.189
+            imageData.data[i + 1] = r * 0.349 + g * 0.686 + b * 0.168
+            imageData.data[i + 2] = r * 0.272 + g * 0.534 + b * 0.131
+          }
+          ctx.putImageData(imageData, 0, 0)
+        }
+
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+        ctx.drawImage(imageRef.current, 0, 0)
       }
-      img.src = originalImageUrl
     }
-  }, [originalImageUrl, transformations])
+  }, [transformations])
+
+  useEffect(() => {
+    if (image) {
+      applyTransformationsToCanvas()
+    }
+  }, [image, applyTransformationsToCanvas])
 
   const applyTransformations = async () => {
     try {
@@ -157,12 +193,13 @@ export const EditImage = ({ id }: { id: number }) => {
       if (data.error) {
         toast.error(data.error)
       } else {
-        setOriginalImageUrl(data.imageUrl)
-        setPreviewImageUrl(data.imageUrl)
+        setImage((prevImage) => ({ ...prevImage!, imageUrl: data.imageUrl }))
         toast.success("Transformations applied!")
       }
     } catch {
       toast.error("Error applying transformations!")
+    } finally {
+      setIsApplying(false)
     }
   }
 
@@ -177,20 +214,30 @@ export const EditImage = ({ id }: { id: number }) => {
   return (
     <div className="min-h-[475px] h-full flex flex-col lg:flex-row items-start justify-center gap-2 bg-white dark:bg-black/50 border dark:border-white/25 rounded-lg p-2">
       <div className="w-full lg:w-2/3 h-full border rounded-sm dark:border-white/25 p-2">
-        <img
-          src={image.imageUrl!}
-          alt="Image"
+        <canvas
+          ref={canvasRef}
           className="rounded-sm border-2 dark:border-white/25 w-full h-full object-contain"
         />
-        <canvas ref={canvasRef} className="hidden" />
+        <img
+          ref={imageRef}
+          src={image.imageUrl!}
+          alt="Image"
+          className="hidden"
+          onLoad={applyTransformationsToCanvas}
+        />
       </div>
       <div className="flex flex-col gap-2 justify-between w-full lg:w-1/3 h-full border rounded-md dark:border-white/25 p-2 pb-4">
         <EditOptions
           transformations={transformations}
           handleTransformationChange={handleTransformationChange}
         />
-        <Button onClick={applyTransformations} size="lg" className="mx-auto">
-          Apply Transformations
+        <Button
+          onClick={applyTransformations}
+          size="lg"
+          className="mx-auto"
+          disabled={isApplying}
+        >
+          {isApplying ? "Applying..." : "Apply Transformations"}
         </Button>
       </div>
     </div>
