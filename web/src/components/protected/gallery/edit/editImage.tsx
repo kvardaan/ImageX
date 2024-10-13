@@ -24,7 +24,7 @@ export interface Transformations {
 export const EditImage = ({ id }: { id: number }) => {
   const [image, setImage] = useState<ImageType | null>(null)
   const [transformations, setTransformations] = useState<Transformations>({
-    resize: 0,
+    resize: 100,
     crop: { x: 0, y: 0, width: 100, height: 100 },
     rotate: 0,
     watermark: "",
@@ -81,62 +81,55 @@ export const EditImage = ({ id }: { id: number }) => {
         ctx.setTransform(1, 0, 0, 1, 0, 0)
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
 
-        // Set canvas size based on resize
+        // Calculate new dimensions based on resize
         const scale = transformations.resize / 100
-        canvasRef.current.width = img.width * scale
-        canvasRef.current.height = img.height * scale
+        const imgWidth = img.width * scale
+        const imgHeight = img.height * scale
 
-        // Apply transformations
-        ctx.translate(canvasRef.current.width / 2, canvasRef.current.height / 2)
-        ctx.rotate((transformations.rotate * Math.PI) / 180)
+        // Set canvas size based on resize
+        // const scale = transformations.resize / 100
+        // canvasRef.current.width = img.width * scale
+        // canvasRef.current.height = img.height * scale
+
+        // Calculate canvas size to fit rotated image
+        const rotateRad = (transformations.rotate * Math.PI) / 180
+        const canvasWidth = Math.ceil(
+          Math.abs(imgWidth * Math.cos(rotateRad)) +
+            Math.abs(imgHeight * Math.sin(rotateRad))
+        )
+        const canvasHeight = Math.ceil(
+          Math.abs(imgWidth * Math.sin(rotateRad)) +
+            Math.abs(imgHeight * Math.cos(rotateRad))
+        )
+
+        // Set canvas size
+        canvasRef.current.width = canvasWidth
+        canvasRef.current.height = canvasHeight
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+
+        // Move to center of canvas
+        ctx.translate(canvasWidth / 2, canvasHeight / 2)
+
+        // Apply rotate
+        ctx.rotate(rotateRad)
+
+        // Apply flip and mirror
         ctx.scale(
           transformations.mirror ? -1 : 1,
           transformations.flip ? -1 : 1
         )
-        ctx.translate(
-          -canvasRef.current.width / 2,
-          -canvasRef.current.height / 2
-        )
 
         // Draw image
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          canvasRef.current.width,
-          canvasRef.current.height
-        )
+        ctx.drawImage(img, -imgWidth / 2, -imgHeight / 2, imgWidth, imgHeight)
 
-        // Apply watermark
-        if (transformations.watermark) {
-          ctx.font = "20px Arial"
-          ctx.fillStyle = "rgba(0, 100, 0, 0.5)"
-          ctx.fillText(transformations.watermark, 100, 30)
-        }
-
-        // Apply crop
-        if (transformations.crop) {
-          ctx.drawImage(
-            img,
-            transformations.crop.x,
-            transformations.crop.y,
-            transformations.crop.width,
-            transformations.crop.height,
-            0,
-            0,
-            canvasRef.current.width,
-            canvasRef.current.height
-          )
-        }
+        // Reset transformation matrix
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
 
         // Apply filters
         if (transformations.filter === "grayscale") {
-          const imageData = ctx.getImageData(
-            0,
-            0,
-            canvasRef.current.width,
-            canvasRef.current.height
-          )
+          const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
           for (let i = 0; i < imageData.data.length; i += 4) {
             const avg =
               (imageData.data[i] +
@@ -149,28 +142,40 @@ export const EditImage = ({ id }: { id: number }) => {
           }
           ctx.putImageData(imageData, 0, 0)
         } else if (transformations.filter === "sepia") {
-          const imageData = ctx.getImageData(
-            0,
-            0,
-            canvasRef.current.width,
-            canvasRef.current.height
-          )
+          const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
           for (let i = 0; i < imageData.data.length; i += 4) {
             const r = imageData.data[i]
             const g = imageData.data[i + 1]
             const b = imageData.data[i + 2]
-            imageData.data[i] = r * 0.393 + g * 0.769 + b * 0.189
-            imageData.data[i + 1] = r * 0.349 + g * 0.686 + b * 0.168
-            imageData.data[i + 2] = r * 0.272 + g * 0.534 + b * 0.131
+            imageData.data[i] = Math.min(255, r * 0.393 + g * 0.769 + b * 0.189)
+            imageData.data[i + 1] = Math.min(
+              255,
+              r * 0.349 + g * 0.686 + b * 0.168
+            )
+            imageData.data[i + 2] = Math.min(
+              255,
+              r * 0.272 + g * 0.534 + b * 0.131
+            )
           }
           ctx.putImageData(imageData, 0, 0)
         }
 
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
-        ctx.drawImage(imageRef.current, 0, 0)
+        // Apply watermark
+        if (transformations.watermark) {
+          ctx.font = "20px Arial"
+          ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
+          ctx.fillText(transformations.watermark, 10, 30)
+        }
       }
     }
   }, [transformations])
+
+  useEffect(() => {
+    if (image && imageRef.current) {
+      imageRef.current.onload = applyTransformationsToCanvas
+      imageRef.current.src = image.imageUrl!
+    }
+  }, [image, applyTransformationsToCanvas])
 
   useEffect(() => {
     if (image) {
@@ -179,28 +184,26 @@ export const EditImage = ({ id }: { id: number }) => {
   }, [image, applyTransformationsToCanvas])
 
   const applyTransformations = async () => {
-    try {
-      const response = await fetch(`api/images/${id}/edit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformations),
-      })
-
-      const data = await response.json()
-
-      if (data.error) {
-        toast.error(data.error)
-      } else {
-        setImage((prevImage) => ({ ...prevImage!, imageUrl: data.imageUrl }))
-        toast.success("Transformations applied!")
-      }
-    } catch {
-      toast.error("Error applying transformations!")
-    } finally {
-      setIsApplying(false)
-    }
+    // try {
+    //   const response = await fetch(`api/images/${id}/edit`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(transformations),
+    //   })
+    //   const data = await response.json()
+    //   if (data.error) {
+    //     toast.error(data.error)
+    //   } else {
+    //     setImage((prevImage) => ({ ...prevImage!, imageUrl: data.imageUrl }))
+    //     toast.success("Transformations applied!")
+    //   }
+    // } catch {
+    //   toast.error("Error applying transformations!")
+    // } finally {
+    //   setIsApplying(false)
+    // }
   }
 
   if (!image) {
