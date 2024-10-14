@@ -36,7 +36,7 @@ export async function POST(
 
     const imageBuffer = await imageResponse.arrayBuffer()
 
-    let transformer = sharp(Buffer.from(imageBuffer))
+    let transformer = sharp(Buffer.from(imageBuffer)).toFormat(transformationPayload.format)
 
     if (transformationPayload.rotate) {
       transformer = transformer.rotate(transformationPayload.rotate)
