@@ -1,6 +1,7 @@
 "use client"
 
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { ImageType } from "@/lib/types/image"
@@ -22,6 +23,7 @@ export interface Transformations {
 }
 
 export const EditImage = ({ id }: { id: number }) => {
+  const router = useRouter()
   const [image, setImage] = useState<ImageType | null>(null)
   const [transformations, setTransformations] = useState<Transformations>({
     resize: 100,
@@ -129,6 +131,7 @@ export const EditImage = ({ id }: { id: number }) => {
         // Reset transformation matrix
         ctx.setTransform(1, 0, 0, 1, 0, 0)
 
+        // TODO: not working in real-time
         // Apply filters (grayscale)
         if (transformations.filter === "grayscale") {
           const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
@@ -147,8 +150,8 @@ export const EditImage = ({ id }: { id: number }) => {
 
         // Apply watermark
         if (transformations.watermark) {
-          ctx.font = "20px Times New Roman"
-          ctx.fillStyle = "rgba(0, 0, 0)"
+          ctx.font = "32px Times New Roman"
+          ctx.fillStyle = "rgba(255, 0, 0)"
           ctx.textBaseline = "top"
           ctx.fillText(
             transformations.watermark,
@@ -186,8 +189,8 @@ export const EditImage = ({ id }: { id: number }) => {
       if (data.error) {
         toast.error(data.error)
       } else {
-        setImage((prevImage) => ({ ...prevImage!, imageUrl: data.imageUrl }))
         toast.success("Transformations applied!")
+        router.push(`/gallery`)
       }
     } catch {
       toast.error("Error applying transformations!")
