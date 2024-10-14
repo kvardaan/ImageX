@@ -14,12 +14,15 @@ export async function POST(
   const imageId = Number(params.id)
   const transformationPayload = await request.json()
 
+  const compressionConfig = {
+    jpeg: { quality: transformationPayload.compress, },
+    png: { compressionLevel: transformationPayload.compress / 10, },
+  }
+
   try {
     const image = await prisma.image.findUnique({
       where: { id: imageId },
     })
-
-    console.log(image?.imageUrl)
 
     if (!image || !image.imageUrl) {
       return NextResponse.json(
@@ -58,9 +61,14 @@ export async function POST(
       transformer = transformer.grayscale()
     }
 
-    // TODO: Not Working
+    // TODO: Not working as expected
     if (transformationPayload.watermark) {
-      const watermarkText = Buffer.from(`<svg><text x="10" y="20" font-family="Arial" font-size="24" fill="white">${transformationPayload.watermark}</text></svg>`)
+      const text = transformationPayload.watermark
+      const fontSize = 32
+      const fontFamily = "Times New Roman"
+      const fill = "red"
+      const svgImage = `<svg><text text-anchor="end" font-family="${fontFamily}" font-size="${fontSize}" fill="${fill}">${text}</text></svg>`
+      const watermarkText = Buffer.from(svgImage)
       transformer = transformer.composite([
         {
           input: watermarkText,
