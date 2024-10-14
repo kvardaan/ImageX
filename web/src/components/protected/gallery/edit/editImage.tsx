@@ -83,23 +83,25 @@ export const EditImage = ({ id }: { id: number }) => {
 
         // Calculate new dimensions based on resize
         const scale = transformations.resize / 100
-        const imgWidth = img.width * scale
-        const imgHeight = img.height * scale
+        const newWidth = img.naturalWidth * scale
+        const newHeight = img.naturalHeight * scale
 
-        // Set canvas size based on resize
-        // const scale = transformations.resize / 100
-        // canvasRef.current.width = img.width * scale
-        // canvasRef.current.height = img.height * scale
+        // Set canvas size to new dimensions
+        canvasRef.current.width = newWidth
+        canvasRef.current.height = newHeight
+
+        // Clear canvas
+        ctx.clearRect(0, 0, newWidth, newHeight)
 
         // Calculate canvas size to fit rotated image
         const rotateRad = (transformations.rotate * Math.PI) / 180
         const canvasWidth = Math.ceil(
-          Math.abs(imgWidth * Math.cos(rotateRad)) +
-            Math.abs(imgHeight * Math.sin(rotateRad))
+          Math.abs(newWidth * Math.cos(rotateRad)) +
+            Math.abs(newHeight * Math.sin(rotateRad))
         )
         const canvasHeight = Math.ceil(
-          Math.abs(imgWidth * Math.sin(rotateRad)) +
-            Math.abs(imgHeight * Math.cos(rotateRad))
+          Math.abs(newWidth * Math.sin(rotateRad)) +
+            Math.abs(newHeight * Math.cos(rotateRad))
         )
 
         // Set canvas size
@@ -122,7 +124,7 @@ export const EditImage = ({ id }: { id: number }) => {
         )
 
         // Draw image
-        ctx.drawImage(img, -imgWidth / 2, -imgHeight / 2, imgWidth, imgHeight)
+        ctx.drawImage(img, -newWidth / 2, -newHeight / 2, newWidth, newHeight)
 
         // Reset transformation matrix
         ctx.setTransform(1, 0, 0, 1, 0, 0)
@@ -162,9 +164,14 @@ export const EditImage = ({ id }: { id: number }) => {
 
         // Apply watermark
         if (transformations.watermark) {
-          ctx.font = "20px Arial"
-          ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
-          ctx.fillText(transformations.watermark, 10, 30)
+          ctx.font = "20px Times New Roman"
+          ctx.fillStyle = "rgba(0, 0, 0)"
+          ctx.textBaseline = "top"
+          ctx.fillText(
+            transformations.watermark,
+            newWidth - 150,
+            newHeight - 25
+          )
         }
       }
     }

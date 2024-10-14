@@ -121,7 +121,7 @@ export const EditOptions = ({
           <Select
             value={transformations.format.split("/").pop() as string}
             onValueChange={(value) =>
-              handleTransformationChange("format", `image/${value}`)
+              handleTransformationChange("format", value)
             }
           >
             <SelectTrigger>
@@ -150,7 +150,9 @@ export const EditOptions = ({
             <SelectContent>
               <SelectItem value="none">None</SelectItem>
               <SelectItem value="grayscale">Grayscale</SelectItem>
-              <SelectItem value="sepia">Sepia</SelectItem>
+              <SelectItem value="sepia" disabled>
+                More coming soon
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
