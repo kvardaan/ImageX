@@ -4,32 +4,39 @@ import { NextRequest, NextResponse } from "next/server"
 
 import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
-import { deleteObject, getSignedPutUrl } from "@/lib/clients/aws.S3"
-
-import { Transformations } from "@/components/protected/gallery/edit/editImage"
-import { computeSHA256, getPublicUrl } from "@/lib/utils"
+import { getSignedPutUrl } from "@/lib/clients/aws.S3"
+import { getFileNameWithFileType, extractPathFromUrl, getPublicUrl } from "@/lib/utils"
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: number } }
 ) {
   const imageId = Number(params.id)
-  const body = await request.json()
-  const transformationPayload = await body.payload
+  const transformationPayload = await request.json()
 
   try {
     const image = await prisma.image.findUnique({
       where: { id: imageId },
     })
 
-    let transformer = sharp(image?.imageUrl!).toFormat(transformationPayload.format)
+    console.log(image?.imageUrl)
 
-    if (transformationPayload.resize?.width && transformationPayload.resize?.height) {
-      transformer = transformer.resize({
-        width: transformationPayload.resize?.width,
-        height: transformationPayload.resize?.height
-      })
+    if (!image || !image.imageUrl) {
+      return NextResponse.json(
+        { error: "Image not found" },
+        { status: StatusCodes.NOT_FOUND }
+      )
     }
+
+    // Fetch the image data
+    const imageResponse = await fetch(image?.imageUrl)
+    if (!imageResponse.ok) {
+      return NextResponse.json({ error: `Failed to fetch image: ${imageResponse.statusText}`, status: imageResponse.status })
+    }
+
+    const imageBuffer = await imageResponse.arrayBuffer()
+
+    let transformer = sharp(Buffer.from(imageBuffer))
 
     if (transformationPayload.rotate) {
       transformer = transformer.rotate(transformationPayload.rotate)
@@ -51,10 +58,12 @@ export async function POST(
       transformer = transformer.grayscale()
     }
 
+    // TODO: Not Working
     if (transformationPayload.watermark) {
+      const watermarkText = Buffer.from(`<svg><text x="10" y="20" font-family="Arial" font-size="24" fill="white">${transformationPayload.watermark}</text></svg>`)
       transformer = transformer.composite([
         {
-          input: transformationPayload.watermark,
+          input: watermarkText,
           gravity: "southeast",
         },
       ])
@@ -64,23 +73,16 @@ export async function POST(
       resolveWithObject: true,
     })
 
-    const deleteImage = await deleteObject(
-      config.awsS3UserBucketName!,
-      image?.imageUrl?.split("imagex.user/").pop()!
+    const fileName = getFileNameWithFileType(
+      `${extractPathFromUrl(image?.imageUrl)}-edited`,
+      info.format
     )
-
-    if (deleteImage.error) {
-      return NextResponse.json(
-        { error: "Error deleting image!" },
-        { status: StatusCodes.FAILED_DEPENDENCY }
-      )
-    }
 
     const putUrl = await getSignedPutUrl({
       bucketName: config.awsS3UserBucketName!,
-      fileName: `${image?.imageUrl?.split("imagex.user/").pop()!}-edited`,
+      fileName,
       fileSize: info.size,
-      fileType: info.format,
+      fileType: `image/${info.format}`,
       checksum: "asdsad",
     })
 
@@ -106,12 +108,16 @@ export async function POST(
       )
     }
 
-    const imagePublicUrl = getPublicUrl(String(image?.imageUrl?.split("imagex.user/").pop()!))
+    const imagePublicUrl = getPublicUrl(fileName)
 
-    await prisma.image.update({
-      where: { id: imageId },
+    await prisma.image.create({
       data: {
-        imageUrl: putUrl.signedUrl,
+        imageUrl: imagePublicUrl,
+        userId: image?.userId,
+        metadata: {
+          fileSize: info.size,
+          fileType: info.format,
+        },
       },
     })
 

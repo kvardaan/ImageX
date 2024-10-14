@@ -11,7 +11,7 @@ import { EditOptions } from "@/components/protected/gallery/edit/editOptions"
 
 export interface Transformations {
   resize: number
-  crop: { x: number; y: number; width: number; height: number }
+  // crop: { x: number; y: number; width: number; height: number }
   rotate: number
   watermark: string
   flip: boolean
@@ -25,7 +25,7 @@ export const EditImage = ({ id }: { id: number }) => {
   const [image, setImage] = useState<ImageType | null>(null)
   const [transformations, setTransformations] = useState<Transformations>({
     resize: 100,
-    crop: { x: 0, y: 0, width: 100, height: 100 },
+    // crop: { x: 0, y: 0, width: 100, height: 100 },
     rotate: 0,
     watermark: "",
     flip: false,
@@ -129,7 +129,7 @@ export const EditImage = ({ id }: { id: number }) => {
         // Reset transformation matrix
         ctx.setTransform(1, 0, 0, 1, 0, 0)
 
-        // Apply filters
+        // Apply filters (grayscale)
         if (transformations.filter === "grayscale") {
           const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
           for (let i = 0; i < imageData.data.length; i += 4) {
@@ -141,23 +141,6 @@ export const EditImage = ({ id }: { id: number }) => {
             imageData.data[i] = avg
             imageData.data[i + 1] = avg
             imageData.data[i + 2] = avg
-          }
-          ctx.putImageData(imageData, 0, 0)
-        } else if (transformations.filter === "sepia") {
-          const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
-          for (let i = 0; i < imageData.data.length; i += 4) {
-            const r = imageData.data[i]
-            const g = imageData.data[i + 1]
-            const b = imageData.data[i + 2]
-            imageData.data[i] = Math.min(255, r * 0.393 + g * 0.769 + b * 0.189)
-            imageData.data[i + 1] = Math.min(
-              255,
-              r * 0.349 + g * 0.686 + b * 0.168
-            )
-            imageData.data[i + 2] = Math.min(
-              255,
-              r * 0.272 + g * 0.534 + b * 0.131
-            )
           }
           ctx.putImageData(imageData, 0, 0)
         }
@@ -191,26 +174,26 @@ export const EditImage = ({ id }: { id: number }) => {
   }, [image, applyTransformationsToCanvas])
 
   const applyTransformations = async () => {
-    // try {
-    //   const response = await fetch(`api/images/${id}/edit`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(transformations),
-    //   })
-    //   const data = await response.json()
-    //   if (data.error) {
-    //     toast.error(data.error)
-    //   } else {
-    //     setImage((prevImage) => ({ ...prevImage!, imageUrl: data.imageUrl }))
-    //     toast.success("Transformations applied!")
-    //   }
-    // } catch {
-    //   toast.error("Error applying transformations!")
-    // } finally {
-    //   setIsApplying(false)
-    // }
+    try {
+      const response = await fetch(`/api/images/${id}/transform`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(transformations),
+      })
+      const data = await response.json()
+      if (data.error) {
+        toast.error(data.error)
+      } else {
+        setImage((prevImage) => ({ ...prevImage!, imageUrl: data.imageUrl }))
+        toast.success("Transformations applied!")
+      }
+    } catch {
+      toast.error("Error applying transformations!")
+    } finally {
+      setIsApplying(false)
+    }
   }
 
   if (!image) {

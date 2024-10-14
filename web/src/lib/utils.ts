@@ -34,3 +34,19 @@ export const getFileNameWithFileType = (fileName: string, fileType: string) => {
   const fileExtension = fileType.split("/").pop()
   return `${fileName}.${fileExtension}`
 }
+
+/**
+ * Given a URL, extracts the path without the file extension. For example,
+ * given `https://example.com/path/to/file.txt`, it will return `path/to/file`.
+ */
+export const extractPathFromUrl = (url: string): string => {
+  const parts = url.split("/");
+  const lastPart = parts.pop();
+
+  if (!lastPart) {
+    throw new Error("Invalid URL: no filename found");
+  }
+
+  const filenameWithoutExtension = lastPart.replace(/\.[^/.]+$/, "");
+  return `${parts.pop()}/${filenameWithoutExtension}`;
+}

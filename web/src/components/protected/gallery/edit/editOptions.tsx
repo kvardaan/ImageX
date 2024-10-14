@@ -28,7 +28,7 @@ export const EditOptions = ({
     <ScrollArea className="w-full h-full flex flex-col justify-between gap-y-4 p-2">
       <div className="space-y-6 p-2">
         {/* Resize */}
-        <div className="flex flex-col gap-y-3">
+        {/* <div className="flex flex-col gap-y-3">
           <Label className="flex items-center justify-between">
             <span>Resize</span>
             <span>{transformations.resize}&#37;</span>
@@ -42,7 +42,7 @@ export const EditOptions = ({
             max={100}
             step={1}
           />
-        </div>
+        </div> */}
 
         {/* Rotate */}
         <div className="flex flex-col gap-y-3">
