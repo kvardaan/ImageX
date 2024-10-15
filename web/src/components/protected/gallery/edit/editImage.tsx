@@ -4,23 +4,11 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 
-import { ImageType } from "@/lib/types/image"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { formatImageMetadata } from "@/lib/utils/image"
+import { ImageType, Transformations } from "@/lib/types/image"
 import { EditOptions } from "@/components/protected/gallery/edit/editOptions"
-
-export interface Transformations {
-  resize: number
-  // crop: { x: number; y: number; width: number; height: number }
-  rotate: number
-  watermark: string
-  flip: boolean
-  mirror: boolean
-  compress: number
-  format: string
-  filter: string
-}
 
 export const EditImage = ({ id }: { id: number }) => {
   const router = useRouter()
@@ -88,13 +76,6 @@ export const EditImage = ({ id }: { id: number }) => {
         const newWidth = img.naturalWidth * scale
         const newHeight = img.naturalHeight * scale
 
-        // Set canvas size to new dimensions
-        canvasRef.current.width = newWidth
-        canvasRef.current.height = newHeight
-
-        // Clear canvas
-        ctx.clearRect(0, 0, newWidth, newHeight)
-
         // Calculate canvas size to fit rotated image
         const rotateRad = (transformations.rotate * Math.PI) / 180
         const canvasWidth = Math.ceil(
@@ -133,20 +114,17 @@ export const EditImage = ({ id }: { id: number }) => {
 
         // TODO: not working in real-time
         // Apply filters (grayscale)
-        if (transformations.filter === "grayscale") {
-          const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
-          for (let i = 0; i < imageData.data.length; i += 4) {
-            const avg =
-              (imageData.data[i] +
-                imageData.data[i + 1] +
-                imageData.data[i + 2]) /
-              3
-            imageData.data[i] = avg
-            imageData.data[i + 1] = avg
-            imageData.data[i + 2] = avg
-          }
-          ctx.putImageData(imageData, 0, 0)
-        }
+        // if (transformations.filter === "grayscale") {
+        //   const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
+        //   const data = imageData.data
+        //   for (let i = 0; i < data.length; i += 4) {
+        //     const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
+        //     data[i] = avg // R
+        //     data[i + 1] = avg // G
+        //     data[i + 2] = avg // B
+        //   }
+        //   ctx.putImageData(imageData, 0, 0)
+        // }
 
         // Apply watermark
         if (transformations.watermark) {
@@ -155,8 +133,8 @@ export const EditImage = ({ id }: { id: number }) => {
           ctx.textBaseline = "top"
           ctx.fillText(
             transformations.watermark,
-            newWidth - 150,
-            newHeight - 25
+            newWidth - 100,
+            newHeight - 40
           )
         }
       }

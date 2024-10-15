@@ -40,13 +40,13 @@ export const getFileNameWithFileType = (fileName: string, fileType: string) => {
  * given `https://example.com/path/to/file.txt`, it will return `path/to/file`.
  */
 export const extractPathFromUrl = (url: string): string => {
-  const parts = url.split("/");
-  const lastPart = parts.pop();
+  const parts = url.split("/")
+  const lastPart = parts.pop()
 
   if (!lastPart) {
-    throw new Error("Invalid URL: no filename found");
+    throw new Error("Invalid URL: no filename found")
   }
 
-  const filenameWithoutExtension = lastPart.replace(/\.[^/.]+$/, "");
-  return `${parts.pop()}/${filenameWithoutExtension}`;
+  const filenameWithoutExtension = lastPart.replace(/\.[^/.]+$/, "")
+  return `${parts.pop()}/${filenameWithoutExtension}`
 }

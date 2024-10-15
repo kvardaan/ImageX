@@ -4,19 +4,24 @@ import { NextRequest, NextResponse } from "next/server"
 
 import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
+import { Transformations } from "@/lib/types/image"
 import { getSignedPutUrl } from "@/lib/clients/aws.S3"
-import { getFileNameWithFileType, extractPathFromUrl, getPublicUrl } from "@/lib/utils"
+import {
+  getFileNameWithFileType,
+  extractPathFromUrl,
+  getPublicUrl,
+} from "@/lib/utils"
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: number } }
 ) {
   const imageId = Number(params.id)
-  const transformationPayload = await request.json()
+  const transformationPayload: Transformations = await request.json()
 
   const compressionConfig = {
-    jpeg: { quality: transformationPayload.compress, },
-    png: { compressionLevel: transformationPayload.compress / 10, },
+    jpeg: { quality: 100 - transformationPayload.compress },
+    png: { compressionLevel: transformationPayload.compress / 10 },
   }
 
   try {
@@ -34,12 +39,15 @@ export async function POST(
     // Fetch the image data
     const imageResponse = await fetch(image?.imageUrl)
     if (!imageResponse.ok) {
-      return NextResponse.json({ error: `Failed to fetch image: ${imageResponse.statusText}`, status: imageResponse.status })
+      return NextResponse.json({
+        error: `Failed to fetch image: ${imageResponse.statusText}`,
+        status: imageResponse.status,
+      })
     }
 
     const imageBuffer = await imageResponse.arrayBuffer()
 
-    let transformer = sharp(Buffer.from(imageBuffer)).toFormat(transformationPayload.format)
+    let transformer = sharp(Buffer.from(imageBuffer))
 
     if (transformationPayload.rotate) {
       transformer = transformer.rotate(transformationPayload.rotate)
@@ -54,7 +62,9 @@ export async function POST(
     }
 
     if (transformationPayload.compress) {
-      transformer = transformer.jpeg({ quality: transformationPayload.compress })
+      transformer = transformer.jpeg({
+        quality: transformationPayload.compress,
+      })
     }
 
     if (transformationPayload.filter === "grayscale") {
@@ -75,6 +85,19 @@ export async function POST(
           gravity: "southeast",
         },
       ])
+    }
+
+    if (transformationPayload.compress > 0) {
+      const format =
+        transformationPayload.format as keyof typeof compressionConfig
+      if (format in compressionConfig) {
+        transformer = transformer.toFormat(format, compressionConfig[format])
+      }
+    } else {
+      // If no compression is specified, just convert to the desired format
+      transformer = transformer.toFormat(
+        transformationPayload.format as keyof typeof compressionConfig
+      )
     }
 
     const { data, info } = await transformer.toBuffer({
@@ -106,7 +129,7 @@ export async function POST(
       body: data,
       headers: {
         "Content-Type": info.format,
-      }
+      },
     })
 
     if (putUrl.error || response.status !== StatusCodes.OK) {
@@ -129,7 +152,10 @@ export async function POST(
       },
     })
 
-    return NextResponse.json({ image, imagePublicUrl }, { status: StatusCodes.OK })
+    return NextResponse.json(
+      { image, imagePublicUrl },
+      { status: StatusCodes.OK }
+    )
   } catch {
     return NextResponse.json(
       { message: "Internal Server Error" },
