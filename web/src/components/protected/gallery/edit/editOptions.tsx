@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
+import { Transformations } from "@/lib/types/image"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Transformations } from "@/components/protected/gallery/edit/editImage"
 
 interface EditOptionsProps {
   transformations: Transformations
@@ -27,6 +27,7 @@ export const EditOptions = ({
   return (
     <ScrollArea className="w-full h-full flex flex-col justify-between gap-y-4 p-2">
       <div className="space-y-6 p-2">
+        {/* TODO: not working in real-time */}
         {/* Resize */}
         {/* <div className="flex flex-col gap-y-3">
           <Label className="flex items-center justify-between">
@@ -43,7 +44,6 @@ export const EditOptions = ({
             step={1}
           />
         </div> */}
-
         {/* Rotate */}
         <div className="flex flex-col gap-y-3">
           <Label className="flex items-center justify-between">
@@ -60,7 +60,6 @@ export const EditOptions = ({
             step={15}
           />
         </div>
-
         {/* Watermark */}
         <div className="flex flex-col gap-y-3">
           <Label>Watermark</Label>
@@ -72,7 +71,6 @@ export const EditOptions = ({
             placeholder="Enter watermark text"
           />
         </div>
-
         {/* Flip */}
         <div className="flex items-center justify-between">
           <Label htmlFor="flip">Vertical Flip</Label>
@@ -84,7 +82,6 @@ export const EditOptions = ({
             }
           />
         </div>
-
         {/* Mirror */}
         <div className="flex items-center justify-between">
           <Label htmlFor="mirror">Horizontal Mirror</Label>
@@ -96,7 +93,6 @@ export const EditOptions = ({
             }
           />
         </div>
-
         {/* Compress */}
         <div className="flex flex-col gap-y-3">
           <Label className="flex items-center justify-between">
@@ -114,7 +110,6 @@ export const EditOptions = ({
             step={10}
           />
         </div>
-
         {/* Change Format */}
         <div className="flex flex-col gap-y-3">
           <Label>Format</Label>
@@ -133,7 +128,6 @@ export const EditOptions = ({
             </SelectContent>
           </Select>
         </div>
-
         {/* Apply Filters */}
         <div className="flex flex-col gap-y-3">
           <Label>Filter</Label>
@@ -149,9 +143,6 @@ export const EditOptions = ({
             <SelectContent>
               <SelectItem value="none">None</SelectItem>
               <SelectItem value="grayscale">Grayscale</SelectItem>
-              <SelectItem value="sepia" disabled>
-                More coming soon
-              </SelectItem>
             </SelectContent>
           </Select>
         </div>
