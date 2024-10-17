@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useApplicationStore } from "@/store/appStore"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 interface AddImageProps {
@@ -23,6 +24,7 @@ interface AddImageProps {
 
 export const AddImage = ({ children }: AddImageProps) => {
   const user = useCurrentUser()
+  const addImage = useApplicationStore((state) => state.addImage)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -67,7 +69,10 @@ export const AddImage = ({ children }: AddImageProps) => {
       const data = await response.json()
 
       if (data.error) toast.error(data.error)
-      else toast.success("Image added successfully!")
+      else {
+        addImage(data.image)
+        toast.success("Image added successfully!")
+      }
       setPreview(null)
       setSelectedFile(null)
     } catch {

@@ -7,12 +7,12 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { formatImageMetadata } from "@/lib/utils/image"
-import { ImageType, Transformations } from "@/lib/types/image"
+import { Image, Transformations } from "@/lib/types/image"
 import { EditOptions } from "@/components/protected/gallery/edit/editOptions"
 
 export const EditImage = ({ id }: { id: number }) => {
   const router = useRouter()
-  const [image, setImage] = useState<ImageType | null>(null)
+  const [image, setImage] = useState<Image | null>(null)
   const [transformations, setTransformations] = useState<Transformations>({
     resize: 100,
     // crop: { x: 0, y: 0, width: 100, height: 100 },

@@ -1,3 +1,5 @@
+"use client"
+
 import { toast } from "sonner"
 import { saveAs } from "file-saver"
 import { Download, EllipsisVertical } from "lucide-react"
@@ -8,13 +10,14 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ImageType } from "@/lib/types/image"
+import { Image } from "@/lib/types/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { useApplicationStore } from "@/store/appStore"
 import { formatImageMetadata } from "@/lib/utils/image"
 
 interface ImageCardProps {
-  image: ImageType
+  image: Image
 }
 
 export const ImageCard = ({ image }: ImageCardProps) => {
@@ -22,6 +25,7 @@ export const ImageCard = ({ image }: ImageCardProps) => {
   const { fileSize, fileType } = formatImageMetadata(
     JSON.stringify(image.metadata)
   )
+  const deleteImage = useApplicationStore((state) => state.deleteImage)
 
   const downloadImage = () => {
     saveAs(image.id.toString(), image.imageUrl?.split("imagex.user/").pop())
@@ -31,7 +35,7 @@ export const ImageCard = ({ image }: ImageCardProps) => {
     router.push(`gallery/${image.id}`)
   }
 
-  const deleteImage = async () => {
+  const removeImage = async () => {
     try {
       const response = await fetch(`api/images/${image.id}`, {
         method: "DELETE",
@@ -42,7 +46,10 @@ export const ImageCard = ({ image }: ImageCardProps) => {
 
       const data = await response.json()
       if (data.error) toast.error(data.error)
-      else toast.success("Image deleted successfully!")
+      else {
+        deleteImage(image.id)
+        toast.success("Image deleted successfully!")
+      }
     } catch {
       toast.error("Something went wrong!")
     }
@@ -58,7 +65,7 @@ export const ImageCard = ({ image }: ImageCardProps) => {
           <DropdownMenuCheckboxItem onClick={editImage}>
             Edit
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem onClick={deleteImage}>
+          <DropdownMenuCheckboxItem onClick={removeImage}>
             Delete
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
