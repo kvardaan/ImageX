@@ -8,7 +8,7 @@ Database Schema
 
 TODOs:
 
-- Add Global State Management
+- Fix Global State Management (User, Add Image)
 - Add a plan upgrade component
 
 Additional Resources
