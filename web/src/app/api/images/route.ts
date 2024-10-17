@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     const imagePublicUrl = getPublicUrl(String(fileName))
 
-    await prisma.image.create({
+    const newImage = await prisma.image.create({
       data: {
         imageUrl: imagePublicUrl,
         userId,
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json(
-      { imageUrl: imagePublicUrl },
+      { image: newImage },
       { status: StatusCodes.CREATED }
     )
   } catch {
