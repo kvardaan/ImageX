@@ -2,15 +2,15 @@ import sharp from "sharp"
 import { StatusCodes } from "http-status-codes"
 import { NextRequest, NextResponse } from "next/server"
 
-import prisma from "@/lib/clients/prisma"
-import { config } from "@/lib/utils/config"
-import { Transformations } from "@/lib/types/image"
-import { getSignedPutUrl } from "@/lib/clients/aws.S3"
 import {
   getFileNameWithFileType,
   extractPathFromUrl,
   getPublicUrl,
 } from "@/lib/utils"
+import prisma from "@/lib/clients/prisma"
+import { config } from "@/lib/utils/config"
+import { Transformations } from "@/lib/types/image"
+import { getSignedPutUrl } from "@/lib/clients/aws.S3"
 
 export async function POST(
   request: NextRequest,
