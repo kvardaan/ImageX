@@ -1,7 +1,7 @@
-export type ImageType = {
+export type Image = {
   id: number
   imageUrl: string | null
-  metadata: JSON
+  metadata: JSON | null
   userId: string
   createdAt: Date
   updatedAt: Date

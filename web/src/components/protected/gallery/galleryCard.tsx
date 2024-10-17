@@ -1,26 +1,25 @@
 "use client"
 
 import { toast } from "sonner"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { PlusCircle, ImageOff } from "lucide-react"
 
-import { ImageType } from "@/lib/types/image"
+import { Image } from "@/lib/types/image"
 import { Button } from "@/components/ui/button"
+import { useApplicationStore } from "@/store/appStore"
 import { AddImage } from "@/components/protected/gallery/addImage"
 import { ImageCard } from "@/components/protected/gallery/imageCard"
 
 export const GalleryCard = () => {
-  const [images, setImages] = useState<ImageType[] | null>()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const images = useApplicationStore((state) => state.images)
+  const setImages = useApplicationStore((state) => state.setImages)
 
   const fetchImages = async () => {
-    setIsLoading(true)
     try {
       const response = await fetch("api/images")
       const data = await response.json()
 
       setImages(data)
-      setIsLoading(false)
     } catch {
       toast.error("Error fetching images!")
     }
@@ -54,7 +53,9 @@ export const GalleryCard = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
             {images &&
-              images.map((image) => <ImageCard key={image.id} image={image} />)}
+              images.map((image: Image) => (
+                <ImageCard key={image.id} image={image} />
+              ))}
           </div>
         )}
       </div>
