@@ -1,23 +1,16 @@
-import { Image } from "@/lib/types/image"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
+
+import { Image } from "@/lib/types/image"
 
 export interface User {
   id: string
   name: string
   email: string
+  image?: string | null
+  isOAuth?: boolean
   profileUrl?: string
-  planId?: string
 }
-
-// export interface Image {
-//   id: number;
-//   imageUrl: string | null;
-//   metadata: JSON | null;
-//   userId: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-// }
 
 interface ApplicationState {
   user: User | null

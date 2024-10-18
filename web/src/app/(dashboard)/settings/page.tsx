@@ -5,7 +5,7 @@ import { SettingsContent } from "@/components/protected/settings/settingsContent
 
 export const metadata: Metadata = { title: "Settings" }
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="rounded-md p-2 text-clip w-full bg-gray-50 dark:bg-white/10">
       <Heading title="Settings" />

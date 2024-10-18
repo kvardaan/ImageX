@@ -1,11 +1,12 @@
 import { Toaster } from "sonner"
 import type { Metadata } from "next"
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider as NextAuthSessionProvider } from "next-auth/react"
 
 import "@/app/globals.css"
 import { auth } from "@/auth"
 import { poppins } from "@/lib/utils/fonts"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SessionProvider } from "@/components/sessionProvider"
 
 export const metadata: Metadata = {
   title: {
@@ -30,10 +31,10 @@ export default async function RootLayout({
         className={`${poppins.className} antialiased text-black dark:text-white`}
       >
         <ThemeProvider>
-          <SessionProvider session={session}>
-            {children}
+          <NextAuthSessionProvider session={session}>
+            <SessionProvider>{children}</SessionProvider>
             <Toaster richColors closeButton duration={2000} />
-          </SessionProvider>
+          </NextAuthSessionProvider>
         </ThemeProvider>
       </body>
     </html>

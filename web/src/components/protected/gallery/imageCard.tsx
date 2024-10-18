@@ -28,7 +28,7 @@ export const ImageCard = ({ image }: ImageCardProps) => {
   const deleteImage = useApplicationStore((state) => state.deleteImage)
 
   const downloadImage = () => {
-    saveAs(image.id.toString(), image.imageUrl?.split("imagex.user/").pop())
+    saveAs(image.id.toString(), image.imageUrl?.split("/").pop())
   }
 
   const editImage = async () => {

@@ -1,9 +1,11 @@
+"use client"
+
 import { User } from "lucide-react"
 
-import { currentUser } from "@/lib/utils/auth"
+import { useApplicationStore } from "@/store/appStore"
 
-export const ProfileButton = async () => {
-  const user = await currentUser()
+export const ProfileButton = () => {
+  const user = useApplicationStore((state) => state.user)
 
   return (
     <div className="flex flex-row items-center justify-center gap-x-3">
