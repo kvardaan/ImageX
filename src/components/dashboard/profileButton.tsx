@@ -1,9 +1,10 @@
 import { User } from "lucide-react"
 
-import { currentUser } from "@/lib/utils/auth"
+import { auth } from "@/lib/auth"
 
 export const ProfileButton = async () => {
-  const user = await currentUser()
+  const session = await auth()
+  const user = session?.user
 
   return (
     <div className="flex flex-row items-center justify-center gap-x-3">

@@ -5,43 +5,23 @@ import { useState } from "react"
 import { User } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
+import { ExtendedUser } from "@/lib/next-auth"
 import { Button } from "@/components/ui/button"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
-import { useApplicationStore } from "@/lib/store/appStore"
+import { changeName } from "@/lib/actions/user"
 import { SettingsCard } from "@/components/dashboard/settings/settingsCard"
 import { ChangeAvatar } from "@/components/dashboard/settings/changeAvatar"
 
-export const SettingsContent = () => {
-  const user = useCurrentUser()
-  const updateUser = useApplicationStore((state) => state.updateUser)
+interface SettinsContentProps {
+  user: ExtendedUser | undefined
+}
+
+export const SettingsContent = ({ user }: SettinsContentProps) => {
   const [userName, setUserName] = useState<string>(user?.name as string)
-  const [userProfileUrl, setUserProfileUrl] = useState<string>(
-    user?.profileUrl as string
-  )
 
   const handleNameChange = async () => {
-    try {
-      const response = await fetch("api/users", {
-        method: "PATCH",
-        body: JSON.stringify({
-          id: user?.id,
-          name: userName,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-
-      const data = await response.json()
-
-      if (data.error) toast.error(data.error)
-      else {
-        updateUser({ name: userName })
-        toast.success("User's name updated successfully!")
-      }
-    } catch (error) {
-      toast.error(JSON.stringify(error))
-    }
+    const response = await changeName(userName)
+    if (response && response.error) toast.error(response.error)
+    else toast.success("User's name updated successfully!")
   }
 
   return (
@@ -61,11 +41,8 @@ export const SettingsContent = () => {
         content={
           <div className="mt-4">
             <div className="flex items-center justify-center rounded-full w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 border dark:border-white/25 hover:opacity-90 hover:transition-opacity hover:duration-500 hover:cursor-pointer">
-              <ChangeAvatar
-                userId={user?.id}
-                setUserProfileUrl={setUserProfileUrl}
-              >
-                {userProfileUrl ? (
+              <ChangeAvatar userId={user?.id}>
+                {user?.profileUrl ? (
                   <img
                     src={user?.profileUrl}
                     alt={`${user?.name}'s Image`}

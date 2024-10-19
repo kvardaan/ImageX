@@ -2,7 +2,7 @@
 
 import { toast } from "sonner"
 import { Upload } from "lucide-react"
-import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react"
+import { useState, useRef, useEffect } from "react"
 
 import {
   Dialog,
@@ -13,23 +13,16 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { getPublicUrl } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/lib/store/appStore"
+import { changeAvatar } from "@/lib/actions/user"
 
 interface ChangeAvatarProps {
   children: React.ReactNode
   userId: string | undefined
-  setUserProfileUrl: Dispatch<SetStateAction<string>>
 }
 
-export const ChangeAvatar = ({
-  children,
-  userId,
-  setUserProfileUrl,
-}: ChangeAvatarProps) => {
-  const updateUser = useApplicationStore((state) => state.updateUser)
+export const ChangeAvatar = ({ children, userId }: ChangeAvatarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -62,24 +55,16 @@ export const ChangeAvatar = ({
     }
 
     const formData = new FormData()
-    formData.append("userId", userId)
-    formData.append("fileName", userId)
     formData.append("file", selectedFile)
 
-    try {
-      await fetch("api/users/avatar", {
-        method: "post",
-        body: formData,
-      })
+    const response = await changeAvatar(formData)
 
-      setUserProfileUrl(getPublicUrl(userId))
-      updateUser({ profileUrl: getPublicUrl(userId) })
-      toast.success("Avatar changed successfully!")
-      setPreview(null)
-      setSelectedFile(null)
-    } catch {
-      toast.error("Error updating avatar!")
+    if (response && response.error) {
+      toast.error(response.error)
     }
+    toast.success("Avatar changed successfully!")
+    setPreview(null)
+    setSelectedFile(null)
   }
 
   useEffect(() => {

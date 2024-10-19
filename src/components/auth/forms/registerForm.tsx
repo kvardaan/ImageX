@@ -14,10 +14,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { SignUpSchema } from "@/lib/schemas/auth"
-import { register } from "@/actions/register"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { SignUpSchema } from "@/lib/schemas/auth"
+import { register } from "@/lib/actions/register"
 import { FormError } from "@/components/formError"
 import { FormSuccess } from "@/components/formSuccess"
 import { CardWrapper } from "@/components/auth/cardWrapper"

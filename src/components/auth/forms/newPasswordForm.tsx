@@ -19,8 +19,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { FormError } from "@/components/formError"
 import { NewPasswordSchema } from "@/lib/schemas/auth"
-import { newPassword } from "@/actions/new-password"
 import { FormSuccess } from "@/components/formSuccess"
+import { newPassword } from "@/lib/actions/new-password"
 import { CardWrapper } from "@/components/auth/cardWrapper"
 
 export const NewPasswordForm = () => {

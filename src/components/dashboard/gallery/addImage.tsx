@@ -14,17 +14,16 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { ExtendedUser } from "@/lib/next-auth"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/lib/store/appStore"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { addImage } from "@/lib/actions/images"
 
 interface AddImageProps {
+  user: ExtendedUser | undefined
   children: React.ReactNode
 }
 
-export const AddImage = ({ children }: AddImageProps) => {
-  const user = useCurrentUser()
-  const addImage = useApplicationStore((state) => state.addImage)
+export const AddImage = ({ user, children }: AddImageProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -57,26 +56,16 @@ export const AddImage = ({ children }: AddImageProps) => {
     }
 
     const formData = new FormData()
-    formData.append("userId", user?.id)
     formData.append("fileName", `${user?.id}/${new Date().getTime()}`)
     formData.append("file", selectedFile)
 
-    try {
-      const response = await fetch("api/images", {
-        method: "post",
-        body: formData,
-      })
-      const data = await response.json()
-      console.log(data)
-      if (data.error) toast.error(data.error)
-      else {
-        addImage(data.image)
-        toast.success("Image added successfully!")
-      }
+    const response = await addImage(formData)
+
+    if (response && response.error) toast.error(response.error)
+    else {
+      toast.success("Image added successfully!")
       setPreview(null)
       setSelectedFile(null)
-    } catch {
-      toast.error("Error adding image!")
     }
   }
 

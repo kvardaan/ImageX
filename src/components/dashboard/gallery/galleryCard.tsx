@@ -1,38 +1,23 @@
-"use client"
-
-import { toast } from "sonner"
-import { useEffect } from "react"
 import { PlusCircle, ImageOff } from "lucide-react"
 
-import { Image } from "@/lib/types/image"
+import { auth } from "@/lib/auth"
+import { Image } from "@prisma/client"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/lib/store/appStore"
 import { AddImage } from "@/components/dashboard/gallery/addImage"
 import { ImageCard } from "@/components/dashboard/gallery/imageCard"
 
-export const GalleryCard = () => {
-  const images = useApplicationStore((state) => state.images)
-  const setImages = useApplicationStore((state) => state.setImages)
+interface GalleryCardProps {
+  images: Image[]
+}
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await fetch("api/images")
-        const data = await response.json()
-
-        setImages(data)
-      } catch {
-        toast.error("Error fetching images!")
-      }
-    }
-    fetchImages()
-  }, [setImages])
+export const GalleryCard = async ({ images }: GalleryCardProps) => {
+  const session = await auth()
 
   return (
     <div className="w-full flex flex-col gap-y-2">
       {/* Add Image Button */}
       <div className="flex flex-row items-center sm:items-end justify-center sm:justify-end">
-        <AddImage>
+        <AddImage user={session?.user}>
           <Button variant="default">
             <PlusCircle className="mr-2 h-4 w-4" /> Add Image
           </Button>

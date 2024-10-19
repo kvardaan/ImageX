@@ -10,10 +10,10 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Image } from "@/lib/types/image"
+import { Image } from "@prisma/client"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/lib/store/appStore"
+import { deleteImage } from "@/lib/actions/images"
 import { formatImageMetadata } from "@/lib/utils/image"
 
 interface ImageCardProps {
@@ -25,7 +25,6 @@ export const ImageCard = ({ image }: ImageCardProps) => {
   const { fileSize, fileType } = formatImageMetadata(
     JSON.stringify(image.metadata)
   )
-  const deleteImage = useApplicationStore((state) => state.deleteImage)
 
   const downloadImage = () => {
     saveAs(image.id.toString(), image.imageUrl?.split("/").pop())
@@ -36,23 +35,13 @@ export const ImageCard = ({ image }: ImageCardProps) => {
   }
 
   const removeImage = async () => {
-    try {
-      const response = await fetch(`api/images/${image.id}`, {
-        method: "DELETE",
-        body: JSON.stringify({
-          fileName: `${image.userId}/${image.imageUrl?.split("/").pop()}`,
-        }),
-      })
+    const response = await deleteImage(
+      image.id,
+      `${image.userId}/${image.imageUrl?.split("/").pop()}`
+    )
 
-      const data = await response.json()
-      if (data.error) toast.error(data.error)
-      else {
-        deleteImage(image.id)
-        toast.success("Image deleted successfully!")
-      }
-    } catch {
-      toast.error("Something went wrong!")
-    }
+    if (response && response.error) toast.error(response.error)
+    else toast.success("Image deleted successfully!")
   }
 
   return (

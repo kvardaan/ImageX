@@ -13,10 +13,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { reset } from "@/actions/reset"
-import { ResetSchema } from "@/lib/schemas/auth"
+import { reset } from "@/lib/actions/reset"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { ResetSchema } from "@/lib/schemas/auth"
 import { FormError } from "@/components/formError"
 import { FormSuccess } from "@/components/formSuccess"
 import { CardWrapper } from "@/components/auth/cardWrapper"

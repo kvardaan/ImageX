@@ -16,10 +16,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { login } from "@/actions/sign-in"
-import { LoginSchema } from "@/lib/schemas/auth"
+import { login } from "@/lib/actions/sign-in"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { LoginSchema } from "@/lib/schemas/auth"
 import { FormError } from "@/components/formError"
 import { FormSuccess } from "@/components/formSuccess"
 import { CardWrapper } from "@/components/auth/cardWrapper"

@@ -4,15 +4,21 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 
+import { Image } from "@prisma/client"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Transformations } from "@/lib/types/image"
+import { transformImage } from "@/lib/actions/images"
 import { formatImageMetadata } from "@/lib/utils/image"
-import { Image, Transformations } from "@/lib/types/image"
 import { EditOptions } from "@/components/dashboard/gallery/edit/editOptions"
 
-export const EditImage = ({ id }: { id: number }) => {
+interface EditImageProps {
+  id: number
+  image: Image | null
+}
+
+export const EditImage = ({ id, image }: EditImageProps) => {
   const router = useRouter()
-  const [image, setImage] = useState<Image | null>(null)
   const [transformations, setTransformations] = useState<Transformations>({
     resize: 100,
     // crop: { x: 0, y: 0, width: 100, height: 100 },
@@ -24,35 +30,18 @@ export const EditImage = ({ id }: { id: number }) => {
     format: "",
     filter: "none",
   })
-  const [isApplying, setIsApplying] = useState<boolean>(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imageRef = useRef<HTMLImageElement>(null)
 
-  const fetchImage = useCallback(async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/images/${id}`)
-      const data = await response.json()
+  const setImage = useCallback(async () => {
+    const { fileType } = formatImageMetadata(JSON.stringify(image?.metadata))
 
-      if (data.error) {
-        toast.error(data.error)
-      } else {
-        setImage(data.image)
-        if (data.image?.metadata) {
-          const { fileType } = formatImageMetadata(
-            JSON.stringify(data.image.metadata)
-          )
-
-          setTransformations((prev) => ({ ...prev, format: fileType }))
-        }
-      }
-    } catch {
-      toast.error("Error fetching image!")
-    }
-  }, [id])
+    setTransformations((prev) => ({ ...prev, format: fileType }))
+  }, [image?.metadata])
 
   useEffect(() => {
-    fetchImage()
-  }, [fetchImage])
+    setImage()
+  }, [setImage])
 
   const handleTransformationChange = (
     key: keyof Transformations,
@@ -155,25 +144,13 @@ export const EditImage = ({ id }: { id: number }) => {
   }, [image, applyTransformationsToCanvas])
 
   const applyTransformations = async () => {
-    try {
-      const response = await fetch(`/api/images/${id}/transform`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformations),
-      })
-      const data = await response.json()
-      if (data.error) {
-        toast.error(data.error)
-      } else {
-        toast.success("Transformations applied!")
-        router.push(`/gallery`)
-      }
-    } catch {
-      toast.error("Error applying transformations!")
-    } finally {
-      setIsApplying(false)
+    const response = await transformImage(id, transformations)
+
+    if (response && response.error) {
+      toast.error(response.error)
+    } else {
+      toast.success("Transformations applied!")
+      router.push(`/gallery`)
     }
   }
 
@@ -205,13 +182,8 @@ export const EditImage = ({ id }: { id: number }) => {
           transformations={transformations}
           handleTransformationChange={handleTransformationChange}
         />
-        <Button
-          onClick={applyTransformations}
-          size="lg"
-          className="mx-auto"
-          disabled={isApplying}
-        >
-          {isApplying ? "Applying..." : "Apply Transformations"}
+        <Button onClick={applyTransformations} size="lg" className="mx-auto">
+          Apply Transformations
         </Button>
       </div>
     </div>

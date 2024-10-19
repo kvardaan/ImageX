@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react"
 import { FormError } from "@/components/formError"
 import { FormSuccess } from "@/components/formSuccess"
 import { CardWrapper } from "@/components/auth/cardWrapper"
-import { newVerification } from "@/actions/new-verification"
+import { newVerification } from "@/lib/actions/new-verification"
 
 export const NewVerificationForm = () => {
   const searchParams = useSearchParams()

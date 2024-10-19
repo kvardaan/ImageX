@@ -1,24 +1,100 @@
+"use server"
+
 import sharp from "sharp"
+import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 import { StatusCodes } from "http-status-codes"
-import { NextRequest, NextResponse } from "next/server"
 
 import {
   getFileNameWithFileType,
-  extractPathFromUrl,
+  computeSHA256,
   getPublicUrl,
+  extractPathFromUrl,
 } from "@/lib/utils"
+import { auth } from "@/lib/auth"
 import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
 import { Transformations } from "@/lib/types/image"
-import { getSignedPutUrl } from "@/lib/clients/aws.S3"
+import { deleteObject, getSignedPutUrl } from "@/lib/clients/aws.S3"
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: number } }
+export async function addImage(formData: FormData) {
+  const session = await auth()
+
+  const imageFile = formData.get("file") as File
+  const fileName = getFileNameWithFileType(
+    formData.get("fileName") as string,
+    imageFile.type
+  )
+
+  try {
+    const putUrl = await getSignedPutUrl({
+      bucketName: config.awsS3UserBucketName!,
+      fileName: fileName,
+      fileSize: imageFile.size,
+      fileType: imageFile.type,
+      checksum: await computeSHA256(imageFile),
+    })
+
+    const response = await fetch(putUrl.signedUrl as string, {
+      method: "put",
+      body: imageFile,
+      headers: {
+        "Content-Type": imageFile.type,
+      },
+    })
+
+    if (putUrl.error || response.status !== StatusCodes.OK) {
+      return { error: "Error uploading image!" }
+    }
+
+    const imagePublicUrl = getPublicUrl(String(fileName))
+
+    await prisma.image.create({
+      data: {
+        imageUrl: imagePublicUrl,
+        userId: session?.user.id as string,
+        metadata: {
+          fileSize: imageFile.size,
+          fileType: imageFile.type,
+        },
+      },
+    })
+  } catch {
+    return { error: "Something went wrong!" }
+  }
+
+  revalidatePath("/gallery")
+  redirect("/gallery")
+}
+
+export async function deleteImage(imageId: number, fileName: string) {
+  try {
+    const deleteImage = await deleteObject(
+      config.awsS3UserBucketName!,
+      fileName
+    )
+
+    if (deleteImage.error) {
+      return { error: "Error deleting image!" }
+    }
+
+    if (deleteImage.sucess) {
+      await prisma.image.delete({ where: { id: imageId } })
+    }
+  } catch {
+    return {
+      error: "Something went wrong!",
+    }
+  }
+
+  revalidatePath("/gallery")
+  redirect("/gallery")
+}
+
+export async function transformImage(
+  imageId: number,
+  transformationPayload: Transformations
 ) {
-  const imageId = Number(params.id)
-  const transformationPayload: Transformations = await request.json()
-
   const compressionConfig = {
     jpeg: { quality: 100 - transformationPayload.compress },
     png: { compressionLevel: transformationPayload.compress / 10 },
@@ -26,23 +102,21 @@ export async function POST(
 
   try {
     const image = await prisma.image.findUnique({
-      where: { id: imageId },
+      where: { id: Number(imageId) },
     })
 
     if (!image || !image.imageUrl) {
-      return NextResponse.json(
-        { error: "Image not found" },
-        { status: StatusCodes.NOT_FOUND }
-      )
+      return {
+        error: "Image not found",
+      }
     }
 
     // Fetch the image data
     const imageResponse = await fetch(image?.imageUrl)
     if (!imageResponse.ok) {
-      return NextResponse.json({
+      return {
         error: `Failed to fetch image: ${imageResponse.statusText}`,
-        status: imageResponse.status,
-      })
+      }
     }
 
     const imageBuffer = await imageResponse.arrayBuffer()
@@ -118,10 +192,9 @@ export async function POST(
     })
 
     if (putUrl.error) {
-      return NextResponse.json(
-        { error: "Error uploading image!" },
-        { status: StatusCodes.FAILED_DEPENDENCY }
-      )
+      return {
+        error: "Error uploading image!",
+      }
     }
 
     const response = await fetch(putUrl.signedUrl!, {
@@ -133,10 +206,9 @@ export async function POST(
     })
 
     if (putUrl.error || response.status !== StatusCodes.OK) {
-      return NextResponse.json(
-        { error: "Error uploading image!" },
-        { status: StatusCodes.FAILED_DEPENDENCY }
-      )
+      return {
+        error: "Error uploading image!",
+      }
     }
 
     const imagePublicUrl = getPublicUrl(fileName)
@@ -151,15 +223,12 @@ export async function POST(
         },
       },
     })
-
-    return NextResponse.json(
-      { image, imagePublicUrl },
-      { status: StatusCodes.OK }
-    )
   } catch {
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: StatusCodes.INTERNAL_SERVER_ERROR }
-    )
+    return {
+      error: "Something went wrong!",
+    }
   }
+
+  revalidatePath("/gallery")
+  redirect("/gallery")
 }
