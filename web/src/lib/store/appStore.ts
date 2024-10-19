@@ -39,14 +39,13 @@ export const useApplicationStore = create<ApplicationState>()(
 
       addImage: (image) =>
         set((state) => ({
-          images: { ...state.images, image }
+          images: { ...state.images, image },
         })),
-
 
       deleteImage: (id) =>
         set((state) => ({
-          images: state.images.filter((img) => img.id !== id)
-        }))
+          images: state.images.filter((img) => img.id !== id),
+        })),
     }),
     {
       name: "application-store",

@@ -7,9 +7,9 @@ import { User } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
-import { useApplicationStore } from "@/store/appStore"
-import { SettingsCard } from "@/components/protected/settings/settingsCard"
-import { ChangeAvatar } from "@/components/protected/settings/changeAvatar"
+import { useApplicationStore } from "@/lib/store/appStore"
+import { SettingsCard } from "@/components/dashboard/settings/settingsCard"
+import { ChangeAvatar } from "@/components/dashboard/settings/changeAvatar"
 
 export const SettingsContent = () => {
   const user = useCurrentUser()

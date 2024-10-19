@@ -2,7 +2,7 @@
 
 import { toast } from "sonner"
 import { Upload } from "lucide-react"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react"
 
 import {
   Dialog,
@@ -13,18 +13,23 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
+import { getPublicUrl } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/store/appStore"
-import { useCurrentUser } from "@/hooks/useCurrentUser"
+import { useApplicationStore } from "@/lib/store/appStore"
 
-interface AddImageProps {
+interface ChangeAvatarProps {
   children: React.ReactNode
+  userId: string | undefined
+  setUserProfileUrl: Dispatch<SetStateAction<string>>
 }
 
-export const AddImage = ({ children }: AddImageProps) => {
-  const user = useCurrentUser()
-  const addImage = useApplicationStore((state) => state.addImage)
+export const ChangeAvatar = ({
+  children,
+  userId,
+  setUserProfileUrl,
+}: ChangeAvatarProps) => {
+  const updateUser = useApplicationStore((state) => state.updateUser)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -50,33 +55,30 @@ export const AddImage = ({ children }: AddImageProps) => {
     }
   }
 
-  const handleSaveImage = async () => {
-    if (!selectedFile || !user?.id) {
+  const handleSaveAvatar = async () => {
+    if (!selectedFile || !userId) {
       toast.error("Please select an image to upload.")
       return
     }
 
     const formData = new FormData()
-    formData.append("userId", user?.id)
-    formData.append("fileName", `${user?.id}/${new Date().getTime()}`)
+    formData.append("userId", userId)
+    formData.append("fileName", userId)
     formData.append("file", selectedFile)
 
     try {
-      const response = await fetch("api/images", {
+      await fetch("api/users/avatar", {
         method: "post",
         body: formData,
       })
-      const data = await response.json()
-      console.log(data)
-      if (data.error) toast.error(data.error)
-      else {
-        addImage(data.image)
-        toast.success("Image added successfully!")
-      }
+
+      setUserProfileUrl(getPublicUrl(userId))
+      updateUser({ profileUrl: getPublicUrl(userId) })
+      toast.success("Avatar changed successfully!")
       setPreview(null)
       setSelectedFile(null)
     } catch {
-      toast.error("Error adding image!")
+      toast.error("Error updating avatar!")
     }
   }
 
@@ -93,9 +95,10 @@ export const AddImage = ({ children }: AddImageProps) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-[90%] rounded-lg">
         <DialogHeader>
-          <DialogTitle>Add Image</DialogTitle>
+          <DialogTitle>Edit Avatar</DialogTitle>
           <DialogDescription>
-            Upload a new image by dragging and dropping or selecting a file.
+            Upload a new avatar by dragging and dropping an image or selecting a
+            file.
           </DialogDescription>
         </DialogHeader>
         <div
@@ -110,7 +113,7 @@ export const AddImage = ({ children }: AddImageProps) => {
             {preview ? (
               <img
                 src={preview}
-                alt="Image preview"
+                alt="Avatar preview"
                 width={128}
                 height={128}
                 loading="lazy"
@@ -120,7 +123,7 @@ export const AddImage = ({ children }: AddImageProps) => {
               <div className="flex flex-col items-center justify-center h-32">
                 <Upload className="h-8 w-8 text-muted-foreground mb-2" />
                 <p className="text-sm text-muted-foreground">
-                  Drag and drop the image here, or click to select a file
+                  Drag and drop the avatar image here, or click to select a file
                 </p>
               </div>
             )}
@@ -134,13 +137,13 @@ export const AddImage = ({ children }: AddImageProps) => {
           </div>
           {selectedFile && (
             <p className="text-sm text-muted-foreground text-center">
-              Selected Image: {selectedFile.name}
+              Selected Avatar: {selectedFile.name}
             </p>
           )}
         </div>
         <DialogFooter className="mx-auto">
-          <Button onClick={handleSaveImage} disabled={!selectedFile}>
-            Add Image
+          <Button onClick={handleSaveAvatar} disabled={!selectedFile}>
+            Save Avatar
           </Button>
         </DialogFooter>
       </DialogContent>

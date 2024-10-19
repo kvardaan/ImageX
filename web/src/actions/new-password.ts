@@ -5,7 +5,7 @@ import * as z from "zod"
 import prisma from "@/lib/clients/prisma"
 import { hashPassword } from "@/lib/utils/auth"
 import { getUserByEmail } from "@/lib/data/user"
-import { NewPasswordSchema } from "@/schemas/auth"
+import { NewPasswordSchema } from "@/lib/schemas/auth"
 import { getPasswordResetTokenByToken } from "@/lib/data/password-reset-token"
 
 export const newPassword = async (

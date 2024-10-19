@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 import { Heading } from "@/components/heading"
-import { GalleryCard } from "@/components/protected/gallery/galleryCard"
+import { GalleryCard } from "@/components/dashboard/gallery/galleryCard"
 
 export const metadata: Metadata = { title: "Gallery" }
 

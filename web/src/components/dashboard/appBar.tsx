@@ -2,8 +2,8 @@ import Link from "next/link"
 import { Camera } from "lucide-react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
-import { SideModal } from "@/components/protected/sideModal"
-import { ProfileButton } from "@/components/protected/profileButton"
+import { SideModal } from "@/components/dashboard/sideModal"
+import { ProfileButton } from "@/components/dashboard/profileButton"
 
 export const AppBar = () => {
   return (

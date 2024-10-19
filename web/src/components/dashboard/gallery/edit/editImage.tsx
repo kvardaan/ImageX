@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { formatImageMetadata } from "@/lib/utils/image"
 import { Image, Transformations } from "@/lib/types/image"
-import { EditOptions } from "@/components/protected/gallery/edit/editOptions"
+import { EditOptions } from "@/components/dashboard/gallery/edit/editOptions"
 
 export const EditImage = ({ id }: { id: number }) => {
   const router = useRouter()

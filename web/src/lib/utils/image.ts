@@ -1,5 +1,5 @@
 export const formatImageMetadata = (metadata: string) => {
-  let { fileSize, fileType }: { fileSize: number; fileType: string } =
+  const { fileSize, fileType }: { fileSize: number; fileType: string } =
     JSON.parse(metadata)
   const fileSizeInBytes = fileSize
   const fileSizeInKb = fileSizeInBytes / 1024
@@ -12,7 +12,7 @@ export const formatImageMetadata = (metadata: string) => {
         ? `${fileSizeInKb.toFixed(2)} KB`
         : `${fileSizeInBytes} bytes`
 
-  fileType = fileType.replace("image/", "")
+  const returnFileType = fileType.replace("image/", "")
 
-  return { fileSize: fileSizeString, fileType }
+  return { fileSize: fileSizeString, fileType: returnFileType }
 }

@@ -6,28 +6,27 @@ import { PlusCircle, ImageOff } from "lucide-react"
 
 import { Image } from "@/lib/types/image"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/store/appStore"
-import { AddImage } from "@/components/protected/gallery/addImage"
-import { ImageCard } from "@/components/protected/gallery/imageCard"
+import { useApplicationStore } from "@/lib/store/appStore"
+import { AddImage } from "@/components/dashboard/gallery/addImage"
+import { ImageCard } from "@/components/dashboard/gallery/imageCard"
 
 export const GalleryCard = () => {
   const images = useApplicationStore((state) => state.images)
   const setImages = useApplicationStore((state) => state.setImages)
 
-  const fetchImages = async () => {
-    try {
-      const response = await fetch("api/images")
-      const data = await response.json()
-
-      setImages(data)
-    } catch {
-      toast.error("Error fetching images!")
-    }
-  }
-
   useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch("api/images")
+        const data = await response.json()
+
+        setImages(data)
+      } catch {
+        toast.error("Error fetching images!")
+      }
+    }
     fetchImages()
-  }, [])
+  }, [setImages])
 
   return (
     <div className="w-full flex flex-col gap-y-2">

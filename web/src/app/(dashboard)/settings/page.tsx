@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 import { Heading } from "@/components/heading"
-import { SettingsContent } from "@/components/protected/settings/settingsContent"
+import { SettingsContent } from "@/components/dashboard/settings/settingsContent"
 
 export const metadata: Metadata = { title: "Settings" }
 

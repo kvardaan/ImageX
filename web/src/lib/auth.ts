@@ -6,7 +6,7 @@ import Credentials from "next-auth/providers/credentials"
 
 import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
-import { LoginSchema } from "@/schemas/auth"
+import { LoginSchema } from "@/lib/schemas/auth"
 import { getUserById } from "@/lib/data/user"
 import { getUserByEmail } from "@/lib/data/user"
 import { comparePassword } from "@/lib/utils/auth"

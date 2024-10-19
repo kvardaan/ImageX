@@ -13,7 +13,7 @@ import {
 import { Image } from "@/lib/types/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/store/appStore"
+import { useApplicationStore } from "@/lib/store/appStore"
 import { formatImageMetadata } from "@/lib/utils/image"
 
 interface ImageCardProps {

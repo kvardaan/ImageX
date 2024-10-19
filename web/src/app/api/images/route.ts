@@ -6,7 +6,7 @@ import {
   computeSHA256,
   getPublicUrl,
 } from "@/lib/utils"
-import { auth } from "@/auth"
+import { auth } from "@/lib/auth"
 import prisma from "@/lib/clients/prisma"
 import { config } from "@/lib/utils/config"
 import { getSignedPutUrl } from "@/lib/clients/aws.S3"

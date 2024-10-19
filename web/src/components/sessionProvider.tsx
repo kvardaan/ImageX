@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { useApplicationStore } from "@/store/appStore"
+import { useApplicationStore } from "@/lib/store/appStore"
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession()
