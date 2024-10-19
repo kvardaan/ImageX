@@ -1,10 +1,10 @@
 # ImageX
 
 System Design
-![System Design](/assets/Expected_System_Design.png)
+![System Design](/public/Expected_System_Design.png)
 
 Database Schema
-![Database Schema](/assets/DB_Schema.png)
+![Database Schema](/public/DB_Schema.png)
 
 TODOs:
 
