@@ -16,6 +16,7 @@ import {
 import { getPublicUrl } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useApplicationStore } from "@/lib/store/appStore"
 
 interface ChangeAvatarProps {
   children: React.ReactNode
@@ -28,6 +29,7 @@ export const ChangeAvatar = ({
   userId,
   setUserProfileUrl,
 }: ChangeAvatarProps) => {
+  const updateUser = useApplicationStore((state) => state.updateUser)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -71,6 +73,7 @@ export const ChangeAvatar = ({
       })
 
       setUserProfileUrl(getPublicUrl(userId))
+      updateUser({ profileUrl: getPublicUrl(userId) })
       toast.success("Avatar changed successfully!")
       setPreview(null)
       setSelectedFile(null)

@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 
-import { EditImage } from "@/components/protected/gallery/edit/editImage"
+import { EditImage } from "@/components/dashboard/gallery/edit/editImage"
 
 export const metadata: Metadata = { title: "Edit Image" }
 

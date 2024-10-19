@@ -2,7 +2,7 @@
 
 import * as z from "zod"
 
-import { SignUpSchema } from "@/schemas/auth"
+import { SignUpSchema } from "@/lib/schemas/auth"
 import { hashPassword } from "@/lib/utils/auth"
 import { sendVerificationEmail } from "@/lib/utils/mail"
 import { createUser, getUserByEmail } from "@/lib/data/user"

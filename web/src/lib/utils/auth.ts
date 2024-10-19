@@ -1,6 +1,6 @@
 import { compare, hash } from "bcrypt"
 
-import { auth } from "@/auth"
+import { auth } from "@/lib/auth"
 
 /**
  * Finds the user from the session

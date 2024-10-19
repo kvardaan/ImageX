@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useApplicationStore } from "@/store/appStore"
+import { useApplicationStore } from "@/lib/store/appStore"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
 
 interface AddImageProps {
@@ -67,7 +67,7 @@ export const AddImage = ({ children }: AddImageProps) => {
         body: formData,
       })
       const data = await response.json()
-
+      console.log(data)
       if (data.error) toast.error(data.error)
       else {
         addImage(data.image)

@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { SessionProvider } from "next-auth/react"
 
 import "@/app/globals.css"
-import { auth } from "@/auth"
+import { auth } from "@/lib/auth"
 import { poppins } from "@/lib/utils/fonts"
 import { ThemeProvider } from "@/components/theme-provider"
 

@@ -1,11 +1,11 @@
 import { Metadata } from "next"
 
 import { Heading } from "@/components/heading"
-import { SettingsContent } from "@/components/protected/settings/settingsContent"
+import { SettingsContent } from "@/components/dashboard/settings/settingsContent"
 
 export const metadata: Metadata = { title: "Settings" }
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="rounded-md p-2 text-clip w-full bg-gray-50 dark:bg-white/10">
       <Heading title="Settings" />

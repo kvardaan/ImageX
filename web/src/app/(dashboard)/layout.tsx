@@ -1,6 +1,6 @@
-import { AppBar } from "@/components/protected/appBar"
-import { Footer } from "@/components/protected/footer"
-import { SideBar } from "@/components/protected/sideBar"
+import { AppBar } from "@/components/dashboard/appBar"
+import { Footer } from "@/components/dashboard/footer"
+import { SideBar } from "@/components/dashboard/sideBar"
 
 interface LayoutProps {
   children: React.ReactNode

@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 
-import { NewPasswordForm } from "@/components/auth/newPasswordForm"
+import { NewPasswordForm } from "@/components/auth/forms/newPasswordForm"
 
 export const metadata: Metadata = { title: "New Password" }
 

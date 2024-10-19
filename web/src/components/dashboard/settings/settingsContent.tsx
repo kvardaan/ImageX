@@ -7,11 +7,13 @@ import { User } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useCurrentUser } from "@/hooks/useCurrentUser"
-import { SettingsCard } from "@/components/protected/settings/settingsCard"
-import { ChangeAvatar } from "@/components/protected/settings/changeAvatar"
+import { useApplicationStore } from "@/lib/store/appStore"
+import { SettingsCard } from "@/components/dashboard/settings/settingsCard"
+import { ChangeAvatar } from "@/components/dashboard/settings/changeAvatar"
 
 export const SettingsContent = () => {
   const user = useCurrentUser()
+  const updateUser = useApplicationStore((state) => state.updateUser)
   const [userName, setUserName] = useState<string>(user?.name as string)
   const [userProfileUrl, setUserProfileUrl] = useState<string>(
     user?.profileUrl as string
@@ -33,7 +35,10 @@ export const SettingsContent = () => {
       const data = await response.json()
 
       if (data.error) toast.error(data.error)
-      else toast.success("User's name updated successfully!")
+      else {
+        updateUser({ name: userName })
+        toast.success("User's name updated successfully!")
+      }
     } catch (error) {
       toast.error(JSON.stringify(error))
     }
