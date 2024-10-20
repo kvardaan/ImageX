@@ -46,7 +46,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async linkAccount({ user }) {
       await prisma.user.update({
         where: { id: user.id },
-        data: { emailVerified: new Date() },
+        data: {
+          emailVerified: new Date(),
+          profileUrl: user.image,
+        },
       })
     },
   },
