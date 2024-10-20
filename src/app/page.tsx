@@ -1,17 +1,15 @@
-"use client"
-
 import { redirect } from "next/navigation"
-import { useSession } from "next-auth/react"
 
 import { cn } from "@/lib/utils"
+import { auth } from "@/lib/auth"
 import { poppins } from "@/lib/utils/fonts"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LoginButton } from "@/components/auth/loginButton"
 
-export default function Home() {
-  const session = useSession()
-  if (session.data?.user) redirect("/overview")
+export default async function Home() {
+  const session = await auth()
+  if (session?.user) redirect("/overview")
 
   return (
     <main className="flex flex-col h-screen items-center justify-center">
