@@ -1,11 +1,6 @@
 const _config = {
   route: process.env.ROUTE,
   nodeEnv: process.env.NODE_ENV,
-  authSecret: process.env.AUTH_SECRET,
-  googleClientId: process.env.GOOGLE_CLIENT_ID,
-  googleSecretKey: process.env.GOOGLE_SECRET_KEY,
-  githubClientId: process.env.GITHUB_CLIENT_ID,
-  githubSecretKey: process.env.GITHUB_SECRET_KEY,
   resendApiKey: process.env.RESEND_API_KEY,
   accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,

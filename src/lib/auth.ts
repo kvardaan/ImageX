@@ -5,7 +5,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import Credentials from "next-auth/providers/credentials"
 
 import prisma from "@/lib/clients/prisma"
-import { config } from "@/lib/utils/config"
 import { LoginSchema } from "@/lib/schemas/auth"
 import { getUserById } from "@/lib/data/user"
 import { getUserByEmail } from "@/lib/data/user"
@@ -14,14 +13,8 @@ import { getAccountByUserId } from "@/lib/data/account"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
-    Google({
-      clientId: String(config.googleClientId),
-      clientSecret: String(config.googleSecretKey),
-    }),
-    GitHub({
-      clientId: String(config.githubClientId),
-      clientSecret: String(config.githubSecretKey),
-    }),
+    Google,
+    GitHub,
     Credentials({
       name: "Credentials",
       credentials: {
