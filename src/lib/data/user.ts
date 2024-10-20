@@ -1,4 +1,3 @@
-import { User } from "@/lib/types/user"
 import prisma from "@/lib/clients/prisma"
 import { currentUser } from "@/lib/utils/auth"
 
@@ -14,7 +13,7 @@ export const getUserID = async (): Promise<string | undefined> => {
 /**
  * Finds the user from the DB using Id
  */
-export const getUserById = async (id: string): Promise<User | null> => {
+export const getUserById = async (id: string) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -29,7 +28,7 @@ export const getUserById = async (id: string): Promise<User | null> => {
 /**
  * Finds the user from the DB using Email
  */
-export const getUserByEmail = async (email: string): Promise<User | null> => {
+export const getUserByEmail = async (email: string) => {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
