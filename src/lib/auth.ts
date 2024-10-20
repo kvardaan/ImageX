@@ -15,12 +15,12 @@ import { getAccountByUserId } from "@/lib/data/account"
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Google({
-      clientId: config.googleClientId,
-      clientSecret: config.googleSecretKey,
+      clientId: String(config.googleClientId),
+      clientSecret: String(config.googleSecretKey),
     }),
     GitHub({
-      clientId: config.githubClientId,
-      clientSecret: config.githubSecretKey,
+      clientId: String(config.githubClientId),
+      clientSecret: String(config.githubSecretKey),
     }),
     Credentials({
       name: "Credentials",
