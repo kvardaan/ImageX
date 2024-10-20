@@ -8,8 +8,8 @@ Database Schema
 
 TODOs:
 
-- Fix Global State Management (User, Add Image)
-- Add a plan upgrade component
+- Create Landing Page
+- Add a plan upgrade component + Setup payments
 
 Additional Resources
 
