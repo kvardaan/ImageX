@@ -5,7 +5,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT,
     "emailVerified" TIMESTAMP(3),
-    "profileUrl" TEXT,
+    "image" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -42,9 +42,9 @@ export const SettingsContent = ({ user }: SettinsContentProps) => {
           <div className="mt-4">
             <div className="flex items-center justify-center rounded-full w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 border dark:border-white/25 hover:opacity-90 hover:transition-opacity hover:duration-500 hover:cursor-pointer">
               <ChangeAvatar userId={user?.id}>
-                {user?.profileUrl ? (
+                {user?.image ? (
                   <img
-                    src={user?.profileUrl}
+                    src={user?.image}
                     alt={`${user?.name}'s Image`}
                     width={128}
                     height={128}

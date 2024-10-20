@@ -5,9 +5,9 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import Credentials from "next-auth/providers/credentials"
 
 import prisma from "@/lib/clients/prisma"
-import { LoginSchema } from "@/lib/schemas/auth"
 import { getUserById } from "@/lib/data/user"
 import { getUserByEmail } from "@/lib/data/user"
+import { LoginSchema } from "@/lib/schemas/auth"
 import { comparePassword } from "@/lib/utils/auth"
 import { getAccountByUserId } from "@/lib/data/account"
 
@@ -48,7 +48,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         where: { id: user.id },
         data: {
           emailVerified: new Date(),
-          profileUrl: user.image,
         },
       })
     },
@@ -70,7 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if (session.user) {
         session.user.name = token.name
-        session.user.profileUrl = token.profileUrl as string
+        session.user.image = token.image as string
         session.user.isOAuth = token.isOAuth as boolean
       }
 
@@ -87,7 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       token.isOAuth = !!existingAccount
       token.name = existingUser.name
-      token.profileUrl = existingUser.profileUrl
+      token.image = existingUser.image
       return token
     },
   },

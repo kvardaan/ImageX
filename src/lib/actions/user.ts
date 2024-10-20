@@ -84,7 +84,7 @@ export async function changeAvatar(formData: FormData) {
     await prisma.user.update({
       where: { id: session?.user.id },
       data: {
-        profileUrl: avatarPublicUrl,
+        image: avatarPublicUrl,
       },
     })
   } catch {
