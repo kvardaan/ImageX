@@ -26,6 +26,7 @@ export const ChangeAvatar = ({ children, userId }: ChangeAvatarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -61,10 +62,12 @@ export const ChangeAvatar = ({ children, userId }: ChangeAvatarProps) => {
 
     if (response && response.error) {
       toast.error(response.error)
+    } else {
+      setIsOpen(false)
+      toast.success("Avatar changed successfully!")
+      setPreview(null)
+      setSelectedFile(null)
     }
-    toast.success("Avatar changed successfully!")
-    setPreview(null)
-    setSelectedFile(null)
   }
 
   useEffect(() => {
@@ -76,7 +79,7 @@ export const ChangeAvatar = ({ children, userId }: ChangeAvatarProps) => {
   }, [preview])
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-[90%] rounded-lg">
         <DialogHeader>

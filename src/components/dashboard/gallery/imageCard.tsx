@@ -79,14 +79,7 @@ export const ImageCard = ({ image }: ImageCardProps) => {
           className="font-sans font-normal"
           onClick={downloadImage}
         >
-          {/* <Link
-            download={image.imageUrl?.split("/").pop()}
-            href={image.imageUrl as string}
-            target="_blank"
-            rel="noopener noreferrer"
-          > */}
           <Download />
-          {/* </Link> */}
         </Button>
       </div>
     </div>

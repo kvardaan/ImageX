@@ -27,6 +27,7 @@ export const AddImage = ({ user, children }: AddImageProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -63,6 +64,7 @@ export const AddImage = ({ user, children }: AddImageProps) => {
 
     if (response && response.error) toast.error(response.error)
     else {
+      setIsOpen(false)
       toast.success("Image added successfully!")
       setPreview(null)
       setSelectedFile(null)
@@ -78,7 +80,7 @@ export const AddImage = ({ user, children }: AddImageProps) => {
   }, [preview])
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-[90%] rounded-lg">
         <DialogHeader>
