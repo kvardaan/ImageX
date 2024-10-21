@@ -26,8 +26,13 @@ export const ImageCard = ({ image }: ImageCardProps) => {
     JSON.stringify(image.metadata)
   )
 
-  const downloadImage = () => {
-    saveAs(image.id.toString(), image.imageUrl?.split("/").pop())
+  const downloadImage = async () => {
+    const response = await fetch(image.imageUrl as string)
+    const blob = await response.blob()
+    saveAs(
+      new Blob([blob], { type: `image/${fileType.toLowerCase()}` }),
+      image.imageUrl?.split("/").pop()
+    )
   }
 
   const editImage = async () => {
@@ -74,7 +79,14 @@ export const ImageCard = ({ image }: ImageCardProps) => {
           className="font-sans font-normal"
           onClick={downloadImage}
         >
+          {/* <Link
+            download={image.imageUrl?.split("/").pop()}
+            href={image.imageUrl as string}
+            target="_blank"
+            rel="noopener noreferrer"
+          > */}
           <Download />
+          {/* </Link> */}
         </Button>
       </div>
     </div>
