@@ -29,11 +29,16 @@ A high-performance image processing application enabling real-time image transfo
 
 ## Architecture
 
-![Architecture](/public/Expected_System_Design.png)
+![Architecture](/public/Architecture.png)
 
 ## Database Schema
 
 ![Database Schema](/public/DB_Schema.png)
+
+## Future Work
+
+- Payment Setup + Add a plan management/ upgrade feature
+- Daily image processing limits based on user plan
 
 Additional Resources
 
@@ -44,5 +49,3 @@ Additional Resources
 
 > [!NOTE]  
 > Suggestions are welcomed for additional improvements to the existing structure. If you have ideas for enhancing the functionality or user experience, please feel free to open an issue or submit a pull request.
-
-- Add a plan upgrade component + Setup payments
