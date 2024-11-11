@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export default async function Layout({ children }: LayoutProps) {
   const session = await auth()
-  if (session?.user) redirect("/overview")
+  if (session?.user) redirect("/gallery")
 
   return (
     <div className="flex items-center justify-center h-screen">{children}</div>

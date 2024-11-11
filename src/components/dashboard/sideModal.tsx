@@ -1,4 +1,4 @@
-import { Menu, Home, Settings, Images } from "lucide-react"
+import { Menu, Settings, Images } from "lucide-react"
 
 import {
   Sheet,
@@ -29,11 +29,6 @@ export const SideModal = async () => {
             </SheetHeader>
             {session && (
               <div className="w-full flex flex-col justify-center items-center gap-x-2 gap-y-3">
-                <SideBarItem
-                  href="/"
-                  title="Overview"
-                  icon={<Home className="w-4 h-4" />}
-                />
                 <SideBarItem
                   href="/gallery"
                   title="Gallery"

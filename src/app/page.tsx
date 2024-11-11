@@ -9,7 +9,7 @@ import { LoginButton } from "@/components/auth/loginButton"
 
 export default async function Home() {
   const session = await auth()
-  if (session?.user) redirect("/overview")
+  if (session?.user) redirect("/gallery")
 
   return (
     <main className="flex flex-col h-screen items-center justify-center">

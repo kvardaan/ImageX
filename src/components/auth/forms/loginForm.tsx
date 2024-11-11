@@ -59,7 +59,7 @@ export const LoginForm = () => {
         } else if (response?.success) {
           form.reset()
           setSuccess(response?.success)
-          router.push("/overview")
+          router.push("/gallery")
         }
       } catch {
         setError("Something went wrong!")
