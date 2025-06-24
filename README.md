@@ -46,3 +46,6 @@ Additional Resources
 - [AWS S3 JavaScript Client Documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/s3)
 - [Prisma ORM Documentation](https://www.prisma.io/docs/orm)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs/installation)
+
+> [!NOTE]  Add commentMore actions
+> Suggestions are welcomed for additional improvements to the existing structure. If you have ideas for enhancing the functionality or user experience, please feel free to open an issue or submit a pull request.
